@@ -1,38 +1,54 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React from "react";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import home from "./Home";
 export default function LoginFrom() {
   const { register, handleSubmit, errors } = useForm({
-      defaultValues:{
-          id:'1409800338149',
-          password:'123456789'
-      }
-  });
-  const onSubmit = async (data: any) => {
-      
-    try {
-                    let info = await axios({
-                        method: 'post',
-                        responseType: 'json',
-                        url: 'http://localhost:5000/employee/web',
-                        data: {                         
-                                            ID: `${data.id}`,
-                                            Pass: `${data.password}`
-                        }
-                    });
-                    console.log(info.data)
-                    
-  } catch (e) {
-                console.log("login fail");
+    defaultValues: {
+      id: "1409800338149",
+      password: "123456789"
     }
-  }
-  console.log({errors});
+  });
   
+  const onSubmit = async (data: any) => {
+    try {
+      let info = await axios({
+        method: "post",
+        responseType: "json",
+        url: "http://localhost:5000/employee/web",
+        data: {
+          ID: `${data.id}`,
+          Pass: `${data.password}`
+        },
+      withCredentials: true,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          "Access-Control-Allow-Credentials": true
+        }
+      });
+      console.log(info)
+      console.log(info.data);
+    } catch (e) {
+      console.log("login fail");
+    }
+  };
+  console.log({ errors });
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input type="text" placeholder="ID" name="id" ref={register({required: true,pattern: /([0-9]){13}/i})}/>
-      <input type="password" placeholder="Password" name="password" ref={register({required: true, min: 1})} />
+      <input
+        type="text"
+        placeholder="ID"
+        name="id"
+        ref={register({ required: true, pattern: /([0-9]){13}/i })}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        name="password"
+        ref={register({ required: true, min: 1 })}
+      />
 
       <input type="submit" />
     </form>
@@ -59,7 +75,7 @@ export default function LoginFrom() {
 //         token: "Guestlogin",
 //         KKS1 : "",
 //         User : "",
-//     });    
+//     });
 //     const  onSubmit = async() => {
 //         let data ={
 //             ID: `${loginInput.ID}`,
@@ -90,7 +106,7 @@ export default function LoginFrom() {
 //           }
 //         // TODO: implement signInWithEmailAndPassword()
 //       }
-    
+
 //     return (
 //         <Fragment>
 //             <div className={classes.root}>
@@ -128,43 +144,43 @@ export default function LoginFrom() {
 //                 </Button>
 //             </div>
 //         </Fragment>
-    //   <section className="section container">
-    //     <div className="columns is-centered">
-    //       <div className="column is-half">
-    //         <form>
-    //           <div className="field">
-    //             <label className="label">ID</label>
-    //             <div className="control">
-    //               <input 
-    //                 className="input" 
-    //                 type="text" 
-    //                 name="ID"
-    //                 onChange={this.onChange} />
-    //             </div>
-    //           </div>
+//   <section className="section container">
+//     <div className="columns is-centered">
+//       <div className="column is-half">
+//         <form>
+//           <div className="field">
+//             <label className="label">ID</label>
+//             <div className="control">
+//               <input
+//                 className="input"
+//                 type="text"
+//                 name="ID"
+//                 onChange={this.onChange} />
+//             </div>
+//           </div>
 
-    //           <div className="field">
-    //             <label className="label">Password</label>
-    //             <div className="control">
-    //               <input 
-    //                 className="input" 
-    //                 type="password"
-    //                 name="password"
-    //                 onChange={this.onChange} />
-    //             </div>
-    //           </div>
+//           <div className="field">
+//             <label className="label">Password</label>
+//             <div className="control">
+//               <input
+//                 className="input"
+//                 type="password"
+//                 name="password"
+//                 onChange={this.onChange} />
+//             </div>
+//           </div>
 
-    //           <div className="field is-grouped">
-    //             <div className="control">
-    //               <button className="button is-link" onClick ={()=>this.onSubmit}>Submit</button>
-    //             </div>
-    //             <div className="control">
-    //               <button className="button is-text">Cancel</button>
-    //             </div>
-    //           </div>
-    //         </form>
-    //       </div>
-    //     </div>
-    //   </section>
+//           <div className="field is-grouped">
+//             <div className="control">
+//               <button className="button is-link" onClick ={()=>this.onSubmit}>Submit</button>
+//             </div>
+//             <div className="control">
+//               <button className="button is-text">Cancel</button>
+//             </div>
+//           </div>
+//         </form>
+//       </div>
+//     </div>
+//   </section>
 //     )
 //   }
