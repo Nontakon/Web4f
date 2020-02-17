@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import home from "./Home";
+import {
+  useHistory 
+} from "react-router";
+import { CounterContext} from "../store/storeprovider"
 export default function LoginFrom() {
+  const { push } = useHistory () 
   const { register, handleSubmit, errors } = useForm({
     defaultValues: {
       id: "1409800338149",
       password: "123456789"
     }
   });
-  
+  const {KKS1,userName,addKKS1, adduserName } = useContext(CounterContext)
   const onSubmit = async (data: any) => {
     try {
       let info = await axios({
@@ -27,8 +31,12 @@ export default function LoginFrom() {
           "Access-Control-Allow-Credentials": true
         }
       });
-      console.log(info)
-      console.log(info.data);
+      // console.log(info.data);
+      addKKS1(info.data.KKS1)
+      adduserName(info.data.user)
+      console.log (KKS1,userName)
+      push('/Home')
+
     } catch (e) {
       console.log("login fail");
     }
@@ -36,6 +44,7 @@ export default function LoginFrom() {
   console.log({ errors });
 
   return (
+    <nav>
     <form onSubmit={handleSubmit(onSubmit)}>
       <input
         type="text"
@@ -52,6 +61,8 @@ export default function LoginFrom() {
 
       <input type="submit" />
     </form>
+    </nav>
+    
   );
 }
 // import React, { useState, useEffect,Fragment } from "react";
