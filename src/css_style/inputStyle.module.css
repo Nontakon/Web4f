@@ -5,7 +5,7 @@ body {
     color: black;
     background-color: whitesmoke;
     border-radius: 5px;
-    top: 300px;
+    margin-top: 5px;
     margin-left: 45%;
     width: 90px;
 }
@@ -13,8 +13,14 @@ body {
     color: black;
     background-color: whitesmoke;
     border-radius: 5px;
-    margin-top: 50px;
+    margin-top: 5px;
     width: 150px;
     margin-left: 45%;
 }
+.inputbutton{
+    margin-top: 10px;
+    margin-left: 45%;
+    border-radius: 10px;
+}
+
 

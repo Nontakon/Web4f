@@ -9,18 +9,24 @@ import styles from '../css_style/inputStyle.module.css';
 import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { makeStyles } from '@material-ui/core/styles';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import Button from '@material-ui/core/Button';
 
 
 export default function LoginFrom() {
 
   const useStyles = makeStyles({
     root: {
-      border: 0,
-      borderRadius: 3,
-      height: 50,
-      width: 50,
-      marginLeft: 120,
-      marginTop: 60
+      height: 30,
+      width: 30,
+      marginLeft: "45%",
+      marginTop: 350
+    },
+    root2: {
+      height: 30,
+      width: 30,
+      marginLeft: "45%",
+      marginTop: 30
     },
   });
 
@@ -76,6 +82,7 @@ export default function LoginFrom() {
         
       />
       </div>
+      <VpnKeyIcon className={classes.root2}/>
       <div className={styles.passwordinputstyles}>
       <input
         type="password"
@@ -85,7 +92,9 @@ export default function LoginFrom() {
         
       />
       </div>
+      <div className={styles.inputbutton}>
       <input type="submit" />
+      </div>
     </form>
     </nav>
     
