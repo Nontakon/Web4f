@@ -4,8 +4,28 @@ import axios from "axios";
 import {
   useHistory 
 } from "react-router";
-import { CounterContext} from "../store/storeprovider"
+import { CounterContext} from "../store/storeprovider";
+import styles from '../css_style/inputStyle.module.css';
+import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { makeStyles } from '@material-ui/core/styles';
+
+
 export default function LoginFrom() {
+
+  const useStyles = makeStyles({
+    root: {
+      border: 0,
+      borderRadius: 3,
+      height: 50,
+      width: 50,
+      marginLeft: 120,
+      marginTop: 60
+    },
+  });
+
+  const classes = useStyles();
+
   const { push } = useHistory () 
   const { register, handleSubmit, errors } = useForm({
     defaultValues: {
@@ -44,30 +64,35 @@ export default function LoginFrom() {
   console.log({ errors });
 
   return (
-    <nav>
-    {/* <div>
-      <text>ha</text>  
-    </div>   */}
+    <nav> 
     <form onSubmit={handleSubmit(onSubmit)}>
+      <AccountCircleIcon className={classes.root}></AccountCircleIcon> 
+      <div className={styles.inputstyles}>
       <input
         type="text"
         placeholder="ID"
         name="id"
         ref={register({ required: true, pattern: /([0-9]){13}/i })}
+        
       />
+      </div>
+      <div className={styles.passwordinputstyles}>
       <input
         type="password"
         placeholder="Password"
         name="password"
         ref={register({ required: true, min: 1 })}
+        
       />
-
+      </div>
       <input type="submit" />
     </form>
     </nav>
     
   );
 }
+
+
 // import React, { useState, useEffect,Fragment } from "react";
 // import axios from "axios";
 // import Grid from '@material-ui/core/Grid'

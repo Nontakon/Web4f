@@ -1,0 +1,20 @@
+body {
+    align-items: center;
+}
+.inputstyles{
+    color: black;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    top: 300px;
+    margin-left: 45%;
+    width: 90px;
+}
+.passwordinputstyles{
+    color: black;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    margin-top: 50px;
+    width: 150px;
+    margin-left: 45%;
+}
+
