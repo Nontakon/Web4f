@@ -4,8 +4,22 @@ import axios from "axios";
 import {
   useHistory 
 } from "react-router";
-import { CounterContext} from "../store/storeprovider"
+import { CounterContext} from "../store/storeprovider";
+import styles from '../css_style/inputStyle.module.css';
+import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { makeStyles } from '@material-ui/core/styles';
+import LockIcon from '@material-ui/icons/Lock';
+import logo from "../css_style/Logo_kmitl.png"
+import styled from "styled-components";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import InputAdornment from "@material-ui/core/InputAdornment";
+
+
+
 export default function LoginFrom() {
+
   const { push } = useHistory () 
   const { register, handleSubmit, errors } = useForm({
     defaultValues: {
@@ -19,7 +33,7 @@ export default function LoginFrom() {
       let info = await axios({
         method: "post",
         responseType: "json",
-        url: "http://localhost:5000/employee/web",
+        url: "http://10.26.14.160:5000/employee/web",
         data: {
           ID: `${data.id}`,
           Pass: `${data.password}`
@@ -44,24 +58,88 @@ export default function LoginFrom() {
   console.log({ errors });
 
   return (
-    <nav>
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input
-        type="text"
-        placeholder="ID"
-        name="id"
-        ref={register({ required: true, pattern: /([0-9]){13}/i })}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        name="password"
-        ref={register({ required: true, min: 1 })}
-      />
-
-      <input type="submit" />
-    </form>
-    </nav>
-    
+    <Background>
+      <Container>
+        <Imagelogo src={logo} />
+        <Gridfrom onSubmit={handleSubmit(onSubmit)}>
+          <StyledTextField
+            id="standard-basic"
+            label="ID"
+            inputRef={input =>
+              register({ required: true, pattern: /([0-9]){13}/i })
+            }
+            type="text"
+            name="id"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <RootAccountCircleIcon />
+                </InputAdornment>
+              )
+            }}
+          />
+          <StyledTextField
+            id="standard-password-input"
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+            inputRef={input => register({ required: true, min: 1 })}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <RootLockIcon />
+                </InputAdornment>
+              )
+            }}
+          />
+          <Submitbutton variant="contained" type="submit">
+            Submit
+          </Submitbutton>
+        </Gridfrom>
+      </Container>
+    </Background>
   );
 }
+
+const Container = styled.div`
+  margin: auto;
+  /* border: 1px solid red; */
+  display: grid;
+`;
+const Background = styled.div`
+  display: flex;
+  min-height:90vh;
+`;
+const RootAccountCircleIcon = styled(AccountCircleIcon)`
+  &&& {
+    height: 30px;
+    width: 30px;
+    padding: 16px 0 30px;
+  }
+`;
+const RootLockIcon = styled(LockIcon)`
+  &&& {
+    height: 30px;
+    width: 30px;
+    padding: 16px 0 30px;
+  }
+`;
+const StyledTextField = styled(TextField)`
+  &&& {
+    width: 300px;
+    padding: 20px 0;
+  }
+`;
+const Imagelogo = styled.img`
+  width: 300px;
+`;
+const Gridfrom = styled.form`
+  display: grid;
+`;
+const Submitbutton = styled(Button)`
+  &&& {
+    width: 250px;
+    margin: 16px auto;
+    align-content: center;
+  }
+`;
