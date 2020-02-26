@@ -3,6 +3,7 @@ import { CounterContext} from "../store/storeprovider"
 import {useHistory } from "react-router";
 import axios from "axios";
 import styled, { css } from "styled-components";
+import dayjs from 'dayjs'
 // import { Grid } from '@material-ui/core';
 
 interface PartInfo {
@@ -17,7 +18,7 @@ interface PartInfo {
 }
 const Home:React.FC = () => {
     const { push } = useHistory () 
-    const {KKS1, userName} = useContext(CounterContext)
+    const {KKS1, userName,addKKS1,adduserName} = useContext(CounterContext)
     const logout = async() =>{
         await axios({
             method: "get",
@@ -30,6 +31,8 @@ const Home:React.FC = () => {
               "Access-Control-Allow-Credentials": true
             }
           });
+        addKKS1("")
+        adduserName("")
         push('/LoginFrom')
     }
     const [partInfo, setPartInfo] = useState([] as PartInfo[])
@@ -81,26 +84,50 @@ const Home:React.FC = () => {
               <Item>Life_time</Item>
               <Item>CountStock</Item>
               {/* <Item>edit</Item> */}
+              <Item2><input  
+              type="text"
+              placeholder="NameEquip"
+              name="NameEquip"></input></Item2>
+              <Item2><input  
+              type="text"
+              placeholder="KKS"
+              name="KKS"></input></Item2>
+              <Item2><input  
+              type="text"
+              placeholder="KKS1"
+              name="KKS1"></input></Item2>
+              <Item2><input  
+              type="text"
+              placeholder="KKS4"
+              name="KKS4"></input></Item2>
+              <Item2><input  
+              type="text"
+              placeholder="DateStart"
+              name="DateStart"></input></Item2>
+              <Item2><input  
+              type="text"
+              placeholder="DateExpired"
+              name="DateExpired"></input></Item2>
+              <Item2><input  
+              type="text"
+              placeholder="Life_time"
+              name="Life_time"></input></Item2>
+              <Item2><input  
+              type="text"
+              placeholder="CountStock"
+              name="CountStock"></input></Item2>
               {
                 partInfo.map(({NameEquip,KKS,KKS1,KKS4,DateStart,DateExpired,Life_time,CountStock})=><>
                 <p>{NameEquip}</p>
                 <p>{KKS}</p>
                 <p>{KKS1}</p>
                 <p>{KKS4}</p>
-                <p>{DateStart}</p>
-                <p>{DateExpired}</p>
+                <p>{dayjs(DateStart).format('DD/MM/YYYY')}</p>
+                <p>{dayjs(DateExpired).format('DD/MM/YYYY')}</p>
                 <p>{Life_time}</p>
                 <p>{CountStock}</p>
                 </>)
               }
-              {/* <Item>{partInfo[0].NameEquip}</Item> */}
-              {/* <Item>{partInfo[0].KKS}</Item>
-              <Item>{partInfo[0].KKS1}</Item>
-              <Item>{partInfo[0].KKS4}</Item>
-              <Item>{partInfo[0].DateStart}</Item>
-              <Item>{partInfo[0].DateExpired}</Item>
-              <Item>{partInfo[0].Life_time}</Item>
-              <Item>{partInfo[0].CountStock}</Item> */}
                {/* <Item2><button onClick ={editdata}>edit</button></Item2> */}
             </Grid>
           </div>
@@ -132,7 +159,7 @@ export const Item = styled.div`
 export const Item2 = styled.div`
   display: flex;
   justify-content: center;
-  padding: .5rem;
+  padding: .5rem
   border-style: dotted;
   ${css`
       font-size: 18px;

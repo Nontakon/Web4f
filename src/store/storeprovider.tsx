@@ -13,12 +13,12 @@ const initialState = {
       case "ADD_KKS":
         return {
           ...state, // copy state 
-          KKS1: state.KKS1+ action.payload // set state counter
+          KKS1: action.payload // set state counter
         }
       case "ADD_userName":
         return {
           ...state, // copy state 
-          userName: state.userName + action.payload // set state counter
+          userName: action.payload // set state counter
         }
     }
   }
