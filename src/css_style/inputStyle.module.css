@@ -8,7 +8,6 @@ body {
     top: 403px;
     left: 45%;
     width: 90px;
-    position: absolute;
 }
 .passwordinputstyles{
     color: black;
@@ -16,14 +15,12 @@ body {
     border-radius: 5px;
     top: 450px;
     width: 150px;
-    margin-left: 45%;
-    position: absolute;
+    left: 45%;
 }
 .inputbutton{
     top: 500px;
     left: 45%;
     border-radius: 10px;
-    position: absolute;
 }
 
 

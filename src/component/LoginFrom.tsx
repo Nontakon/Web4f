@@ -11,11 +11,14 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { makeStyles } from '@material-ui/core/styles';
 import LockIcon from '@material-ui/icons/Lock';
 import logo from "../css_style/Logo_kmitl.png"
+import styled from "styled-components";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import InputAdornment from "@material-ui/core/InputAdornment";
+
 
 
 export default function LoginFrom() {
-
-  const classes = useStyles();
 
   const { push } = useHistory () 
   const { register, handleSubmit, errors } = useForm({
@@ -30,7 +33,7 @@ export default function LoginFrom() {
       let info = await axios({
         method: "post",
         responseType: "json",
-        url: "http://localhost:5000/employee/web",
+        url: "http://10.26.14.160:5000/employee/web",
         data: {
           ID: `${data.id}`,
           Pass: `${data.password}`
@@ -55,180 +58,88 @@ export default function LoginFrom() {
   console.log({ errors });
 
   return (
-    <nav>
-    <img src={logo}></img>
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <AccountCircleIcon className={classes.root}></AccountCircleIcon> 
-      <div className={styles.inputstyles}>
-      <input
-        type="text"
-        placeholder="ID"
-        name="id"
-        ref={register({ required: true, pattern: /([0-9]){13}/i })}
-      />
-      </div>
-      <LockIcon className={classes.root2}/>
-      <div className={styles.passwordinputstyles}>
-      <input
-        type="password"
-        placeholder="Password"
-        name="password"
-        ref={register({ required: true, min: 1 })}
-        
-      />
-      </div>
-      <div className={styles.inputbutton}>
-      <input type="submit" />
-      </div>
-    </form>
-    </nav>
-    
+    <Background>
+      <Container>
+        <Imagelogo src={logo} />
+        <Gridfrom onSubmit={handleSubmit(onSubmit)}>
+          <StyledTextField
+            id="standard-basic"
+            label="ID"
+            inputRef={input =>
+              register({ required: true, pattern: /([0-9]){13}/i })
+            }
+            type="text"
+            name="id"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <RootAccountCircleIcon />
+                </InputAdornment>
+              )
+            }}
+          />
+          <StyledTextField
+            id="standard-password-input"
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+            inputRef={input => register({ required: true, min: 1 })}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <RootLockIcon />
+                </InputAdornment>
+              )
+            }}
+          />
+          <Submitbutton variant="contained" type="submit">
+            Submit
+          </Submitbutton>
+        </Gridfrom>
+      </Container>
+    </Background>
   );
 }
 
-const useStyles = makeStyles({
-  root: {
-    height: 30,
-    width: 30,
-    left: "42%",
-    position:'absolute',
-    top: 400
-  },
-  root2: {
-    height: 30,
-    width: 30,
-    left: "42%",
-    top: "450px",
-    position: 'absolute',
-  },
-});
-// import React, { useState, useEffect,Fragment } from "react";
-// import axios from "axios";
-// import Grid from '@material-ui/core/Grid'
-// import { makeStyles } from '@material-ui/core/styles';
-// import TextField from '@material-ui/core/TextField';
-// import classes from "*.module.css";
-// import {useForm} from "react-hook-form";
-// import Button from '@material-ui/core/Button';
-// const useStyles = makeStyles(theme => ({
-// }));
-
-// export default function LoginFrom() {
-//     const accountForm = useForm();
-//     const [loginInput, setLoginInput] = useState({
-//         ID: "1409800338149",
-//         password: "123456789"
-//     });
-//     const [loginInfo, setLoginInfo] = useState({
-//         token: "Guestlogin",
-//         KKS1 : "",
-//         User : "",
-//     });
-//     const  onSubmit = async() => {
-//         let data ={
-//             ID: `${loginInput.ID}`,
-//             Pass: `${loginInput.password}`
-//         }
-//         console.log(data)
-//         try {
-//             let info = await axios({
-//                 method: 'post',
-//                 responseType: 'json',
-//                 url: 'http://localhost:5000/employee/web',
-//                 data: data
-//               });
-//             // const  info  = await axios.post(`http://localhost:5000/employee/web`, {body:{
-//             //     ID: `${ID}`,
-//             //     Pass: `${password}`}
-//             // });
-//             console.log(info.data)
-//             console.log("------------------------")
-//             setLoginInfo((prev)=>({...prev, token : info.data.token }))
-//             setLoginInfo((prev)=>({...prev, User : info.data.user }))
-//             setLoginInfo((prev)=>({...prev, KKS1 : info.data.KKS1 }))
-//             // this.setState({defaultAnimationDialog : info.data.defaultAnimationDialog });
-//             console.log("sucess")
-//           } catch (e) {
-//             console.log("login fail");
-//             // this.setState({ defaultAnimationDialog: true });
-//           }
-//         // TODO: implement signInWithEmailAndPassword()
-//       }
-
-//     return (
-//         <Fragment>
-//             <div className={classes.root}>
-//             <form onSubmit={accountForm.handleSubmit(onSubmit)}>
-//                 <Grid container
-//                     direction="row"
-//                     justify="center"
-//                     alignItems="center"
-//                     spacing ={1}
-//                     >
-//                         <Grid item md={12} xs={12}>
-//                         <TextField
-//                             id="ID"
-//                             label="ID"
-//                             margin="normal"
-//                             variant="outlined"
-//                         />
-//                         </Grid>
-//                         <Grid item md={12} xs={12}>
-//                         <TextField
-//                             onChange={Pass => setLoginInput((prev)=>({...prev, Passwords: Pass }))}
-//                             id="password"
-//                             label="Password"
-//                             margin="normal"
-//                             variant="outlined"
-//                             type="password"
-//                         />
-//                         </Grid>
-//                     </Grid>
-//                     </form>
-//                     <Button
-//                     onClick={onSubmit}
-//                     >
-//                     Back
-//                 </Button>
-//             </div>
-//         </Fragment>
-//   <section className="section container">
-//     <div className="columns is-centered">
-//       <div className="column is-half">
-//         <form>
-//           <div className="field">
-//             <label className="label">ID</label>
-//             <div className="control">
-//               <input
-//                 className="input"
-//                 type="text"
-//                 name="ID"
-//                 onChange={this.onChange} />
-//             </div>
-//           </div>
-
-//           <div className="field">
-//             <label className="label">Password</label>
-//             <div className="control">
-//               <input
-//                 className="input"
-//                 type="password"
-//                 name="password"
-//                 onChange={this.onChange} />
-//             </div>
-//           </div>
-
-//           <div className="field is-grouped">
-//             <div className="control">
-//               <button className="button is-link" onClick ={()=>this.onSubmit}>Submit</button>
-//             </div>
-//             <div className="control">
-//               <button className="button is-text">Cancel</button>
-//             </div>
-//           </div>
-//         </form>
-//       </div>
-//     </div>
-//   </section>
-//     )
-//   }
+const Container = styled.div`
+  margin: auto;
+  /* border: 1px solid red; */
+  display: grid;
+`;
+const Background = styled.div`
+  display: flex;
+  min-height:90vh;
+`;
+const RootAccountCircleIcon = styled(AccountCircleIcon)`
+  &&& {
+    height: 30px;
+    width: 30px;
+    padding: 16px 0 30px;
+  }
+`;
+const RootLockIcon = styled(LockIcon)`
+  &&& {
+    height: 30px;
+    width: 30px;
+    padding: 16px 0 30px;
+  }
+`;
+const StyledTextField = styled(TextField)`
+  &&& {
+    width: 300px;
+    padding: 20px 0;
+  }
+`;
+const Imagelogo = styled.img`
+  width: 300px;
+`;
+const Gridfrom = styled.form`
+  display: grid;
+`;
+const Submitbutton = styled(Button)`
+  &&& {
+    width: 250px;
+    margin: 16px auto;
+    align-content: center;
+  }
+`;
