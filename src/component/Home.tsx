@@ -4,6 +4,7 @@ import {useHistory } from "react-router";
 import axios from "axios";
 import styled, { css } from "styled-components";
 import dayjs from 'dayjs'
+import MaterialTable, { Column } from 'material-table';
 // import { Grid } from '@material-ui/core';
 
 interface PartInfo {
@@ -11,10 +12,14 @@ interface PartInfo {
   KKS1: string
   NameEquip: string
   KKS4: string
-  DateStart: Date
-  DateExpired: Date
+  DateStart: Date | string
+  DateExpired: Date | string
   Life_time: number
   CountStock: number
+}
+interface TableState {
+  columns: Array<Column<PartInfo>>;
+  data: PartInfo[];
 }
 const Home:React.FC = () => {
     const { push } = useHistory () 
@@ -35,13 +40,25 @@ const Home:React.FC = () => {
         adduserName("")
         push('/LoginFrom')
     }
-    const [partInfo, setPartInfo] = useState([] as PartInfo[])
+    const [state, setState] = React.useState<TableState>({
+      columns: [
+        { title: 'NameEquip', field: 'NameEquip' },
+        { title: 'KKS', field: 'KKS' },
+        { title: 'KKS1', field: 'KKS1' },
+        { title: 'KKS4',field: 'KKS4',},
+        { title: 'DateStart',field: 'DateStart',},
+        { title: 'DateExpired',field: 'DateExpired',},
+        { title: 'Life_time',field: 'Life_time',},
+        { title: 'CountStock',field: 'CountStock',},
+      ],
+      data: [],
+    });
     useEffect(()=>{
       const fetching = async()=>{
         try{
-          let { data } = await axios.get(`http://localhost:5000/equip_table/${KKS1}`)
-          // console.log(data)
-          setPartInfo(data)
+          let  infodata  = await axios.get(`http://localhost:5000/equip_table/${KKS1}`) 
+          console.log(infodata.data)
+          setState((prev) => ({ ...prev, data : infodata.data}))
           
         }catch(e){
           console.log(e)
@@ -50,10 +67,10 @@ const Home:React.FC = () => {
     fetching()
     },[KKS1])
     const consol=()=>{
-      console.log(partInfo)
+      console.log(state.data)
     }
     const editdata=()=>{
-      console.log(partInfo[0])
+      console.log(state.data)
     }
     return (
         <div>
@@ -74,95 +91,57 @@ const Home:React.FC = () => {
             
           </div> 
           <div>
-            <Grid>
-              <Item>NameEquip</Item>
-              <Item>KKS</Item>
-              <Item>KKS1</Item>
-              <Item>KKS4</Item>
-              <Item>DateStart</Item>
-              <Item>DateExpired</Item>
-              <Item>Life_time</Item>
-              <Item>CountStock</Item>
-              {/* <Item>edit</Item> */}
-              <Item2><input  
-              type="text"
-              placeholder="NameEquip"
-              name="NameEquip"></input></Item2>
-              <Item2><input  
-              type="text"
-              placeholder="KKS"
-              name="KKS"></input></Item2>
-              <Item2><input  
-              type="text"
-              placeholder="KKS1"
-              name="KKS1"></input></Item2>
-              <Item2><input  
-              type="text"
-              placeholder="KKS4"
-              name="KKS4"></input></Item2>
-              <Item2><input  
-              type="text"
-              placeholder="DateStart"
-              name="DateStart"></input></Item2>
-              <Item2><input  
-              type="text"
-              placeholder="DateExpired"
-              name="DateExpired"></input></Item2>
-              <Item2><input  
-              type="text"
-              placeholder="Life_time"
-              name="Life_time"></input></Item2>
-              <Item2><input  
-              type="text"
-              placeholder="CountStock"
-              name="CountStock"></input></Item2>
-              {
-                partInfo.map(({NameEquip,KKS,KKS1,KKS4,DateStart,DateExpired,Life_time,CountStock})=><>
-                <p>{NameEquip}</p>
-                <p>{KKS}</p>
-                <p>{KKS1}</p>
-                <p>{KKS4}</p>
-                <p>{dayjs(DateStart).format('DD/MM/YYYY')}</p>
-                <p>{dayjs(DateExpired).format('DD/MM/YYYY')}</p>
-                <p>{Life_time}</p>
-                <p>{CountStock}</p>
-                </>)
-              }
-               {/* <Item2><button onClick ={editdata}>edit</button></Item2> */}
-            </Grid>
+            <MaterialTable 
+              title ="EquipmentData" 
+              columns={state.columns}
+              data={state.data.map(({DateStart,DateExpired,...rest})=>(
+                {
+                  ...rest,
+                DateStart: dayjs(DateStart).format('DD/MM/YYYY'),
+                DateExpired: dayjs(DateExpired).format('DD/MM/YYYY')
+                }
+              ))}
+              editable={{
+                onRowAdd: newData =>
+                  new Promise(resolve => {
+                    setTimeout(() => {
+                      resolve();
+                      setState(prevState => {
+                        const data = [...prevState.data];
+                        data.push(newData);
+                        return { ...prevState, data };
+                      });
+                    }, 600);
+                  }),
+                onRowUpdate: (newData, oldData) =>
+                  new Promise(resolve => {
+                    setTimeout(() => {
+                      resolve();
+                      if (oldData) {
+                        setState(prevState => {
+                          const data = [...prevState.data];
+                          data[data.indexOf(oldData)] = newData;
+                          return { ...prevState, data };
+                        });
+                      }
+                    }, 600);
+                  }),
+                onRowDelete: oldData =>
+                  new Promise(resolve => {
+                    setTimeout(() => {
+                      resolve();
+                      setState(prevState => {
+                        const data = [...prevState.data];
+                        data.splice(data.indexOf(oldData), 1);
+                        return { ...prevState, data };
+                      });
+                    }, 600);
+                  }),
+              }}
+            />
           </div>
         </div>
     )
 }
 
 export default Home
-
-export const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(10, 1fr);
-  grid-gap: 5px;
-  border-style: solid;
-  
-`;
-export const Item = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: .5rem;
-  border-style: dotted;
-  
-  ${css`
-      font-size: 18px;
-      font-weight: bold;
-    `}
-`;
-export const Item2 = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: .5rem
-  border-style: dotted;
-  ${css`
-      font-size: 18px;
-      font-weight: bold;
-    `}
-`;
