@@ -9,26 +9,11 @@ import styles from '../css_style/inputStyle.module.css';
 import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { makeStyles } from '@material-ui/core/styles';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import Button from '@material-ui/core/Button';
+import LockIcon from '@material-ui/icons/Lock';
+import logo from "../css_style/Logo_kmitl.png"
 
 
 export default function LoginFrom() {
-
-  const useStyles = makeStyles({
-    root: {
-      height: 30,
-      width: 30,
-      marginLeft: "45%",
-      marginTop: 350
-    },
-    root2: {
-      height: 30,
-      width: 30,
-      marginLeft: "45%",
-      marginTop: 30
-    },
-  });
 
   const classes = useStyles();
 
@@ -70,7 +55,8 @@ export default function LoginFrom() {
   console.log({ errors });
 
   return (
-    <nav> 
+    <nav>
+    <img src={logo}></img>
     <form onSubmit={handleSubmit(onSubmit)}>
       <AccountCircleIcon className={classes.root}></AccountCircleIcon> 
       <div className={styles.inputstyles}>
@@ -79,10 +65,9 @@ export default function LoginFrom() {
         placeholder="ID"
         name="id"
         ref={register({ required: true, pattern: /([0-9]){13}/i })}
-        
       />
       </div>
-      <VpnKeyIcon className={classes.root2}/>
+      <LockIcon className={classes.root2}/>
       <div className={styles.passwordinputstyles}>
       <input
         type="password"
@@ -101,7 +86,22 @@ export default function LoginFrom() {
   );
 }
 
-
+const useStyles = makeStyles({
+  root: {
+    height: 30,
+    width: 30,
+    left: "42%",
+    position:'absolute',
+    top: 400
+  },
+  root2: {
+    height: 30,
+    width: 30,
+    left: "42%",
+    top: "450px",
+    position: 'absolute',
+  },
+});
 // import React, { useState, useEffect,Fragment } from "react";
 // import axios from "axios";
 // import Grid from '@material-ui/core/Grid'
