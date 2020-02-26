@@ -141,5 +141,7 @@ const Submitbutton = styled(Button)`
     width: 250px;
     margin: 16px auto;
     align-content: center;
+    color: white;
+    background-color: orange;
   }
 `;
