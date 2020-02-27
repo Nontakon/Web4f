@@ -23,13 +23,14 @@ export default function LoginFrom() {
   const { push } = useHistory () 
   const { register, handleSubmit, errors } = useForm({
     defaultValues: {
-      id: "1409800338149",
-      password: "123456789"
+      id: "",
+      password: ""
     }
   });
   const {KKS1,userName,addKKS1, adduserName } = useContext(CounterContext)
   const onSubmit = async (data: any) => {
     try {
+      console.log(data)
       let info = await axios({
         method: "post",
         responseType: "json",
@@ -65,7 +66,7 @@ export default function LoginFrom() {
           <StyledTextField
             id="standard-basic"
             label="ID"
-            inputRef={input =>
+            inputRef={
               register({ required: true, pattern: /([0-9]){13}/i })
             }
             type="text"
@@ -83,7 +84,8 @@ export default function LoginFrom() {
             label="Password"
             type="password"
             autoComplete="current-password"
-            inputRef={input => register({ required: true, min: 1 })}
+            name="password"
+            inputRef={ register({ required: true, min: 1 })}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">

@@ -9,9 +9,7 @@ import MaterialTable, { Column } from 'material-table';
 
 interface PartInfo {
   KKS: string
-  KKS1: string
   NameEquip: string
-  KKS4: string
   DateStart: Date | string
   DateExpired: Date | string
   Life_time: number
@@ -44,8 +42,6 @@ const Home:React.FC = () => {
       columns: [
         { title: 'NameEquip', field: 'NameEquip' },
         { title: 'KKS', field: 'KKS' },
-        { title: 'KKS1', field: 'KKS1' },
-        { title: 'KKS4',field: 'KKS4',},
         { title: 'DateStart',field: 'DateStart',},
         { title: 'DateExpired',field: 'DateExpired',},
         { title: 'Life_time',field: 'Life_time',},
