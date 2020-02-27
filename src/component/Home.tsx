@@ -69,75 +69,68 @@ const Home:React.FC = () => {
       console.log(state.data)
     }
     return (
+      <div>
         <div>
-          <div><button onClick ={logout}>
-                log out
-            </button>
-          </div>
-          <div>
-               factory : {KKS1}
-          </div>
-          <div>
-              hi {userName}
-          </div>
-          <div>
-            <button onClick ={consol}>
-                show console
-            </button>
-            
-          </div> 
-          <div>
-            <MaterialTable 
-              title ="EquipmentData" 
-              columns={state.columns}
-              data={state.data.map(({DateStart,DateExpired,...rest})=>(
-                {
-                  ...rest,
-                DateStart: dayjs(DateStart).format('DD/MM/YYYY'),
-                DateExpired: dayjs(DateExpired).format('DD/MM/YYYY')
-                }
-              ))}
-              editable={{
-                onRowAdd: newData =>
-                  new Promise(resolve => {
-                    setTimeout(() => {
-                      resolve();
-                      setState(prevState => {
-                        const data = [...prevState.data];
-                        data.push(newData);
-                        return { ...prevState, data };
-                      });
-                    }, 600);
-                  }),
-                onRowUpdate: (newData, oldData) =>
-                  new Promise(resolve => {
-                    setTimeout(() => {
-                      resolve();
-                      if (oldData) {
-                        setState(prevState => {
-                          const data = [...prevState.data];
-                          data[data.indexOf(oldData)] = newData;
-                          return { ...prevState, data };
-                        });
-                      }
-                    }, 600);
-                  }),
-                onRowDelete: oldData =>
-                  new Promise(resolve => {
-                    setTimeout(() => {
-                      resolve();
-                      setState(prevState => {
-                        const data = [...prevState.data];
-                        data.splice(data.indexOf(oldData), 1);
-                        return { ...prevState, data };
-                      });
-                    }, 600);
-                  }),
-              }}
-            />
-          </div>
+          <button onClick={logout}>log out</button>
         </div>
-    )
+        <div>factory : {KKS1}</div>
+        <div>Log in by {userName}</div>
+        <Viewtable>
+          <MaterialTable
+            title="EquipmentData"
+            style={{ borderRadius: "15"}}
+            columns={state.columns}
+            data={state.data.map(({ DateStart, DateExpired, ...rest }) => ({
+              ...rest,
+              DateStart: dayjs(DateStart).format("DD/MM/YYYY"),
+              DateExpired: dayjs(DateExpired).format("DD/MM/YYYY")
+            }))}
+            editable={{
+              onRowAdd: newData =>
+                new Promise(resolve => {
+                  setTimeout(() => {
+                    resolve();
+                    setState(prevState => {
+                      const data = [...prevState.data];
+                      data.push(newData);
+                      return { ...prevState, data };
+                    });
+                  }, 600);
+                }),
+              onRowUpdate: (newData, oldData) =>
+                new Promise(resolve => {
+                  setTimeout(() => {
+                    resolve();
+                    if (oldData) {
+                      setState(prevState => {
+                        const data = [...prevState.data];
+                        data[data.indexOf(oldData)] = newData;
+                        return { ...prevState, data };
+                      });
+                    }
+                  }, 600);
+                }),
+              onRowDelete: oldData =>
+                new Promise(resolve => {
+                  setTimeout(() => {
+                    resolve();
+                    setState(prevState => {
+                      const data = [...prevState.data];
+                      data.splice(data.indexOf(oldData), 1);
+                      return { ...prevState, data };
+                    });
+                  }, 600);
+                })
+            }}
+          />
+        </Viewtable>
+      </div>
+    );
 }
 
 export default Home
+
+const Viewtable = styled.div`
+  margin-top: 20px;
+  padding: 0 50px 0 50px;
+`;

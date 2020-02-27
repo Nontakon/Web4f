@@ -34,12 +34,12 @@ export default function LoginFrom() {
       let info = await axios({
         method: "post",
         responseType: "json",
-        url: "http://10.26.14.160:5000/employee/web",
+        url: "http://localhost:5000/employee/web",
         data: {
           ID: `${data.id}`,
           Pass: `${data.password}`
         },
-      withCredentials: true,
+        withCredentials: true,
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
@@ -105,7 +105,6 @@ export default function LoginFrom() {
 
 const Container = styled.div`
   margin: auto;
-  /* border: 1px solid red; */
   display: grid;
 `;
 const Background = styled.div`
