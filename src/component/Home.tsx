@@ -5,6 +5,8 @@ import axios from "axios";
 import styled, { css } from "styled-components";
 import dayjs from 'dayjs'
 import MaterialTable, { Column } from 'material-table';
+import Button from "@material-ui/core/Button";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 // import { Grid } from '@material-ui/core';
 
 interface PartInfo {
@@ -70,12 +72,12 @@ const Home:React.FC = () => {
     }
     return (
       <div>
-        <div>
-          <button onClick={logout}>log out</button>
-        </div>
-        <div>factory : {KKS1}</div>
-        <div>Log in by {userName}</div>
+        <Headnav>
+          <Label>Warehouse</Label>
+          <Logoutbut color="inherit" onClick={logout} startIcon={<ExitToAppIcon/>}>Log out</Logoutbut>
+        </Headnav>
         <Viewtable>
+          <Infoview>{userName} &nbsp; factory : {KKS1} </Infoview>
           <MaterialTable
             title="EquipmentData"
             style={{ borderRadius: "15"}}
@@ -130,7 +132,41 @@ const Home:React.FC = () => {
 
 export default Home
 
+const Headnav = styled.div`
+  background-color: orange;
+  height: 130px;
+  width: 100%;
+  position: fixed;
+  z-index: 1000;
+`;
 const Viewtable = styled.div`
-  margin-top: 20px;
-  padding: 0 50px 0 50px;
+  padding: 140px 30px 20px 30px;
+  /* border: 2px solid black; */
+  background-color: whitesmoke;
+  border-radius: 3px;
+`;
+
+const Logoutbut = styled(Button)`
+&&&{
+  position: absolute;
+  right: 30px;
+  margin-top: 2%;
+  color: whitesmoke;
+  border-width: 5px;
+  font-size: 22px;
+}
+`;
+const Infoview = styled.div`
+  flex-direction: row;
+  font-family: calibri;
+  font-size: 30px;
+  padding: 10px 0 20px 0;
+`;
+const Label = styled.div`
+  display: flex;
+  margin: 10px 0 0 30px;
+  position: absolute;
+  color: white;
+  font-size : 80px;
+  font-family: calibri;
 `;
