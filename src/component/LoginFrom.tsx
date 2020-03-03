@@ -45,7 +45,7 @@ export default function LoginFrom() {
     },[])
   const onSubmit = async (data: any) => {
     try {
-      console.log(data)
+      // console.log(data)
       let info = await axios({
         method: "post",
         responseType: "json",
@@ -64,7 +64,7 @@ export default function LoginFrom() {
       // console.log(info.data);
       addKKS1(info.data.KKS1)
       adduserName(info.data.user)
-      console.log (KKS1,userName)
+      // console.log (KKS1,userName)
       push('/Home')
 
     } catch (e) {

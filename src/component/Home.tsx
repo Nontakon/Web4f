@@ -25,11 +25,20 @@ interface TableState {
 const Home:React.FC = () => {
     const { push } = useHistory () 
     const {KKS1, userName,addKKS1,adduserName} = useContext(CounterContext)
-    console.log(Cookies.get())
+    const token = Cookies.get(`access_token`)
+    const [userinfo, setuserinfo] = React.useState({
+      NameEmp:'',
+      LastNameEmp: '',
+      Position: '',
+      KKS1_factory: ''
+    });
     const chacktoken = async() => {
-      if(Cookies.get(`access_token`)!==undefined){
-        let  infodata  = await axios.get(`http://localhost:5000/equip_table/${KKS1}`) 
-        console.log(infodata.data)
+      if(token !==undefined){
+        let  infouser  = await axios.post(`http://localhost:5000/equip_table/user`,{ token: `${token}`}) 
+        // console.log(infouser.data)
+        setuserinfo(infouser.data)
+        let  infodata  = await axios.get(`http://localhost:5000/equip_table/${infouser.data.KKS1_factory}`) 
+        // console.log(infodata.data)
         setState((prev) => ({ ...prev, data : infodata.data}))
       }else{
         push('/LoginFrom')
@@ -66,18 +75,13 @@ const Home:React.FC = () => {
       const fetching = async()=>{
         try{
           chacktoken()
+         
         }catch(e){
           console.log(e)
         }
     }
     fetching()
-    },[KKS1])
-    const consol=()=>{
-      console.log(state.data)
-    }
-    const editdata=()=>{
-      console.log(state.data)
-    }
+    },[])
     return (
       <div>
         <Headnav>
@@ -85,7 +89,7 @@ const Home:React.FC = () => {
           <Logoutbut color="inherit" onClick={logout} startIcon={<ExitToAppIcon/>}>Log out</Logoutbut>
         </Headnav>
         <Viewtable>
-          <Infoview>{userName} &nbsp; factory : {KKS1} </Infoview>
+          <Infoview>{userinfo.NameEmp} &nbsp;{userinfo.LastNameEmp} &nbsp; factory : {userinfo.KKS1_factory} </Infoview>
           <MaterialTable
             title="EquipmentData"
             style={{ borderRadius: "15"}}

@@ -27,7 +27,7 @@ const initialState = {
       counterReducer,
       initialState
     )
-        console.log(counterState)
+        // console.log(counterState)
     const { KKS1,userName } = counterState
   
     const addKKS1 = (payload:string) =>
