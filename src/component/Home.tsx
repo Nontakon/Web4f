@@ -25,6 +25,7 @@ interface TableState {
 const Home:React.FC = () => {
     const { push } = useHistory () 
     const {KKS1, userName,addKKS1,adduserName} = useContext(CounterContext)
+    console.log(Cookies.get())
     const logout = async() =>{
       var dc = document.cookie;
       console.log(dc + "55555");
