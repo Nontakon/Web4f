@@ -7,6 +7,7 @@ import dayjs from 'dayjs'
 import MaterialTable, { Column } from 'material-table';
 import Button from "@material-ui/core/Button";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import Cookies from "js-cookie";
 // import { Grid } from '@material-ui/core';
 
 interface PartInfo {
@@ -25,6 +26,8 @@ const Home:React.FC = () => {
     const { push } = useHistory () 
     const {KKS1, userName,addKKS1,adduserName} = useContext(CounterContext)
     const logout = async() =>{
+      var dc = document.cookie;
+      console.log(dc + "55555");
         await axios({
             method: "get",
             responseType: "json",
