@@ -26,9 +26,16 @@ const Home:React.FC = () => {
     const { push } = useHistory () 
     const {KKS1, userName,addKKS1,adduserName} = useContext(CounterContext)
     console.log(Cookies.get())
+    const chacktoken = async() => {
+      if(Cookies.get(`access_token`)!==undefined){
+        let  infodata  = await axios.get(`http://localhost:5000/equip_table/${KKS1}`) 
+        console.log(infodata.data)
+        setState((prev) => ({ ...prev, data : infodata.data}))
+      }else{
+        push('/LoginFrom')
+      }
+    }
     const logout = async() =>{
-      var dc = document.cookie;
-      console.log(dc + "55555");
         await axios({
             method: "get",
             responseType: "json",
@@ -58,10 +65,7 @@ const Home:React.FC = () => {
     useEffect(()=>{
       const fetching = async()=>{
         try{
-          let  infodata  = await axios.get(`http://localhost:5000/equip_table/${KKS1}`) 
-          console.log(infodata.data)
-          setState((prev) => ({ ...prev, data : infodata.data}))
-          
+          chacktoken()
         }catch(e){
           console.log(e)
         }

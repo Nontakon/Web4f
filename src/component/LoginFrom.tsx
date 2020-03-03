@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext,useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import {
@@ -15,7 +15,7 @@ import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
-
+import Cookies from "js-cookie";
 
 
 export default function LoginFrom() {
@@ -28,6 +28,21 @@ export default function LoginFrom() {
     }
   });
   const {KKS1,userName,addKKS1, adduserName } = useContext(CounterContext)
+  const chacktoken = async() => {
+    if(Cookies.get(`access_token`)!==undefined){
+      push('/Home')
+    }
+  }
+  useEffect(()=>{
+      const fetching = async()=>{
+        try{
+          chacktoken()
+        }catch(e){
+          console.log(e)
+        }
+    }
+    fetching()
+    },[])
   const onSubmit = async (data: any) => {
     try {
       console.log(data)
