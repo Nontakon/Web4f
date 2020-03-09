@@ -39,6 +39,7 @@ export default function LoginFrom() {
           chacktoken()
         }catch(e){
           console.log(e)
+          console.log(e)
         }
     }
     fetching()
