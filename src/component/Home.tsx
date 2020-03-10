@@ -30,9 +30,20 @@ interface PartInfo {
   Life_time: number
   CountStock: number
 }
+interface WithdrawInfo {
+  NameEmployee: string
+  IDEmployee: string
+  KKS: string
+  KKSCode: number
+  DateWithdraw: Date | string
+}
 interface TableState {
   columns: Array<Column<PartInfo>>;
   data: PartInfo[];
+}
+interface TableWithdraw {
+  columns: Array<Column<WithdrawInfo>>;
+  data: WithdrawInfo[];
 }
 const Home:React.FC = () => {
     const { push } = useHistory () 
@@ -80,6 +91,16 @@ const Home:React.FC = () => {
         { title: 'DateExpired',field: 'DateExpired',},
         { title: 'Life_time',field: 'Life_time',},
         { title: 'CountStock',field: 'CountStock',},
+      ],
+      data: [],
+    });
+    const [withdrawLog, setWithdrawLog] = React.useState<TableWithdraw>({
+      columns: [
+        { title: 'NameEmployee', field: 'NameEmployee' },
+        { title: 'IDEmployee', field: 'IDEmployee' },
+        { title: 'NameEquip',field: 'NameEquip',},
+        { title: 'KKSCode',field: 'KKSCode',},
+        { title: 'DateWithdraw',field: 'DateWithdraw',},
       ],
       data: [],
     });
@@ -206,6 +227,15 @@ const Home:React.FC = () => {
                 </FormControl>
 
               </form>
+              <MaterialTable
+                title=""
+                style={{ borderRadius: "15"}}
+                columns={withdrawLog.columns}
+                data={withdrawLog.data.map(({DateWithdraw, ...rest }) => ({
+                  ...rest,
+                  DateWithdraw: dayjs(DateWithdraw).format("DD/MM/YYYY")
+                }))}
+          />
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
