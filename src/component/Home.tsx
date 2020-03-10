@@ -14,6 +14,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 // import { Grid } from '@material-ui/core';
 
 interface PartInfo {
@@ -89,8 +95,13 @@ const Home:React.FC = () => {
     }
     fetching()
     },[])
-
+    const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const [month, setMonth] = React.useState<number | string>('');
+
+    const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setMonth(Number(event.target.value) || '');
+    };
 
     const handleClickOpen = () => {
     setOpen(true);
@@ -98,6 +109,11 @@ const Home:React.FC = () => {
 
     const handleClose = () => {
     setOpen(false);
+    };
+
+    const showmonth = () => {
+    console.log(month);
+    setOpen(false);  
     };
 
     return (
@@ -162,16 +178,40 @@ const Home:React.FC = () => {
             <DialogTitle id="form-dialog-title">Withdraw Log</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                To subscribe to this website, please enter your email address here. We will send updates
-                occasionally.
+                Insert month and year
               </DialogContentText>
-              
+              <form>
+                <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor="demo-dialog-native">Month</InputLabel>
+                  <Select
+                    native
+                    value={month}
+                    onChange={handleChange}
+                    input={<Input id="demo-dialog-native" />}
+                  >
+                    <option value="" />
+                    <option value={1}>January</option>
+                    <option value={2}>Febuary</option>
+                    <option value={3}>March</option>
+                    <option value={4}>April</option>
+                    <option value={5}>May</option>
+                    <option value={6}>June</option>
+                    <option value={7}>July</option>
+                    <option value={8}>August</option>
+                    <option value={9}>September</option>
+                    <option value={10}>October</option>
+                    <option value={11}>November</option>
+                    <option value={12}>December</option>
+                  </Select>
+                </FormControl>
+
+              </form>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
                 Cancel
                 </Button>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={showmonth} color="primary">
                 Export
                 </Button>
             </DialogActions>
@@ -182,6 +222,19 @@ const Home:React.FC = () => {
 }
 
 export default Home
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+    },
+  }),
+);
 
 const Headnav = styled.div`
   background-color: orange;
