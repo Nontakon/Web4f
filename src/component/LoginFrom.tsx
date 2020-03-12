@@ -46,18 +46,18 @@ export default function LoginFrom() {
   const onSubmit = async (data: any) => {
     try {
       console.log(data)
-      const info = await axios.post(`http://10.26.14.160:5000/employee/web`,{ 
+      const info = await axios.post(`http://34.87.152.9:5000/employee/web`,{ 
         ID: `${data.id}`,
         Pass: `${data.password}`
       })
-      console.log(info.data.token);
+      console.log(info);
       addKKS1(info.data.KKS1)
       adduserName(info.data.user)
       await Cookies.set(`access_token`, `${info.data.token}`,{ expires: (new Date(new Date().getTime() + 16*60*60*1000))})
       push('/Home')
 
     } catch (e) {
-      console.log("login fail");
+      console.log(e);
     }
   };
   console.log({ errors });

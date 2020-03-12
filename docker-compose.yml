@@ -1,0 +1,15 @@
+version: '3'
+services:
+  p4f-web:
+    image: p4f-web:1.0
+    ports: 
+      - "3000:3000"
+    container_name: 'p4f-web-Container'
+    restart: always
+    networks: 
+      - p4f-web
+
+
+      
+networks: 
+  p4f-web:

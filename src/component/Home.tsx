@@ -57,10 +57,10 @@ const Home:React.FC = () => {
     });
     const chacktoken = async() => {
       if(token !==undefined){
-        let  infouser  = await axios.post(`http://10.26.14.160:5000/equip_table/user`,{ token: `${token}`}) 
+        let infouser = await axios.post(`http://34.87.152.9:5000/equip_table/user`,{ token: `${token}`}) 
         // console.log(infouser.data)
         setuserinfo(infouser.data)
-        let  infodata  = await axios.get(`http://10.26.14.160:5000/equip_table/${infouser.data.KKS1_factory}`) 
+        let infodata = await axios.get(`http://34.87.152.9:5000/equip_table/${infouser.data.KKS1_factory}`) 
         // console.log(infodata.data)
         setState((prev) => ({ ...prev, data : infodata.data}))
       }else{
@@ -99,7 +99,7 @@ const Home:React.FC = () => {
          
         }catch(e){
           console.log(e)
-          console.log(e)
+          // console.log(e)
         }
     }
     fetching()
@@ -126,7 +126,7 @@ const Home:React.FC = () => {
     };
 
     const showmonth = () => {
-    console.log(month);
+    // console.log(month);
     setOpen(false);  
     };
 
@@ -204,7 +204,7 @@ const Home:React.FC = () => {
                     input={<Input id="demo-dialog-native" />}
                   >
                     {[...new Array(12)].map((_,i)=>{
-                    console.log(i)
+                    // console.log(i)
                       return <option value={i}>{dayjs().month(i).format('MMMM')}</option>
                   })}
                   </Select>
@@ -218,7 +218,7 @@ const Home:React.FC = () => {
                     input={<Input id="demo-dialog-native" />}
                   >
                     {[...new Array(4)].map((_, i) => {
-                      console.log(i)
+                      // console.log(i)
                       return <option value={i}>{dayjs().add(-i, 'year').format('YYYY')}</option>
                     })}
                   </Select>
