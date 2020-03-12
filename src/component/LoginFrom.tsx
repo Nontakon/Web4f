@@ -46,7 +46,7 @@ export default function LoginFrom() {
   const onSubmit = async (data: any) => {
     try {
       console.log(data)
-      const info = await axios.post(`http://10.26.14.160:5000/employee/web`,{ 
+      const info = await axios.post(`http://localhost:5000/employee/web`,{ 
         ID: `${data.id}`,
         Pass: `${data.password}`
       })
