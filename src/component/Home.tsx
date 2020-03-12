@@ -107,10 +107,15 @@ const Home:React.FC = () => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [month, setMonth] = React.useState<number | string>('');
+    const [year, setYear] = React.useState<number | string>('');
 
-    const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const handleMonth = (event: React.ChangeEvent<{ value: unknown }>) => {
     setMonth(Number(event.target.value) || '');
     };
+    
+  const handleYear = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setYear(Number(event.target.value) || '');
+  };
 
     const handleClickOpen = () => {
     setOpen(true);
@@ -195,22 +200,27 @@ const Home:React.FC = () => {
                   <Select
                     native
                     value={month}
-                    onChange={handleChange}
+                    onChange={handleMonth}
                     input={<Input id="demo-dialog-native" />}
                   >
-                    <option value="" />
-                    <option value={1}>January</option>
-                    <option value={2}>Febuary</option>
-                    <option value={3}>March</option>
-                    <option value={4}>April</option>
-                    <option value={5}>May</option>
-                    <option value={6}>June</option>
-                    <option value={7}>July</option>
-                    <option value={8}>August</option>
-                    <option value={9}>September</option>
-                    <option value={10}>October</option>
-                    <option value={11}>November</option>
-                    <option value={12}>December</option>
+                    {[...new Array(12)].map((_,i)=>{
+                    console.log(i)
+                      return <option value={i}>{dayjs().month(i).format('MMMM')}</option>
+                  })}
+                  </Select>
+                </FormControl>
+                <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor="demo-dialog-native">Year</InputLabel>
+                  <Select
+                    native
+                    value={year}
+                    onChange={handleYear}
+                    input={<Input id="demo-dialog-native" />}
+                  >
+                    {[...new Array(4)].map((_, i) => {
+                      console.log(i)
+                      return <option value={i}>{dayjs().add(-i, 'year').format('YYYY')}</option>
+                    })}
                   </Select>
                 </FormControl>
 
