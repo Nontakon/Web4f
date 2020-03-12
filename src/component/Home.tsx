@@ -212,7 +212,7 @@ const Home:React.FC = () => {
                   >
                     {[...new Array(12)].map((_,i)=>{
                     console.log(i)
-                      return <option value={i}>{dayjs().month(i).format('MMMM')}</option>
+                      return <option value={i}>{dayjs().add(i-1,'month').format('MMMM')}</option>
                   })}
                   </Select>
                 </FormControl>
