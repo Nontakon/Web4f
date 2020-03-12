@@ -39,33 +39,21 @@ export default function LoginFrom() {
           chacktoken()
         }catch(e){
           console.log(e)
-          console.log(e)
         }
     }
     fetching()
     },[])
   const onSubmit = async (data: any) => {
     try {
-      // console.log(data)
-      let info = await axios({
-        method: "post",
-        responseType: "json",
-        url: "http://localhost:5000/employee/web",
-        data: {
-          ID: `${data.id}`,
-          Pass: `${data.password}`
-        },
-        withCredentials: true,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-          "Access-Control-Allow-Credentials": true
-        }
-      });
-      // console.log(info.data);
+      console.log(data)
+      const info = await axios.post(`http://10.26.14.160:5000/employee/web`,{ 
+        ID: `${data.id}`,
+        Pass: `${data.password}`
+      })
+      console.log(info.data.token);
       addKKS1(info.data.KKS1)
       adduserName(info.data.user)
-      // console.log (KKS1,userName)
+      await Cookies.set(`access_token`, `${info.data.token}`,{ expires: (new Date(new Date().getTime() + 16*60*60*1000))})
       push('/Home')
 
     } catch (e) {

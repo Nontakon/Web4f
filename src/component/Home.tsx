@@ -57,10 +57,10 @@ const Home:React.FC = () => {
     });
     const chacktoken = async() => {
       if(token !==undefined){
-        let  infouser  = await axios.post(`http://localhost:5000/equip_table/user`,{ token: `${token}`}) 
+        let  infouser  = await axios.post(`http://10.26.14.160:5000/equip_table/user`,{ token: `${token}`}) 
         // console.log(infouser.data)
         setuserinfo(infouser.data)
-        let  infodata  = await axios.get(`http://localhost:5000/equip_table/${infouser.data.KKS1_factory}`) 
+        let  infodata  = await axios.get(`http://10.26.14.160:5000/equip_table/${infouser.data.KKS1_factory}`) 
         // console.log(infodata.data)
         setState((prev) => ({ ...prev, data : infodata.data}))
       }else{
@@ -68,19 +68,7 @@ const Home:React.FC = () => {
       }
     }
     const logout = async() =>{
-        await axios({
-            method: "get",
-            responseType: "json",
-            url: "http://localhost:5000/employee/clear_cookie",
-          withCredentials: true,
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-              "Access-Control-Allow-Credentials": true
-            }
-          });
-        addKKS1("")
-        adduserName("")
+        Cookies.remove('access_token')
         push('/LoginFrom')
     }
     const [state, setState] = React.useState<TableState>({
