@@ -110,23 +110,25 @@ const Home:React.FC = () => {
     const [year, setYear] = React.useState<number | string>('');
 
     const handleMonth = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setMonth(Number(event.target.value) || '');
+      setMonth(Number(event.target.value) || '');
+    console.log(month);
     };
     
-  const handleYear = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const handleYear = (event: React.ChangeEvent<{ value: unknown }>) => {
     setYear(Number(event.target.value) || '');
-  };
+    console.log(year)
+    };
 
     const handleClickOpen = () => {
     setOpen(true);
     };
-
     const handleClose = () => {
     setOpen(false);
     };
 
     const showmonth = () => {
     console.log(month);
+    console.log(year)
     setOpen(false);  
     };
 
@@ -211,8 +213,8 @@ const Home:React.FC = () => {
                     input={<Input id="demo-dialog-native" />}
                   >
                     {[...new Array(12)].map((_,i)=>{
-                    console.log(i)
-                      return <option value={i}>{dayjs().add(i-1,'month').format('MMMM')}</option>
+                    // console.log(i)
+                      return <option value={dayjs().add(0-i, 'month').format('MM')}>{dayjs().add(0-i,'month').format('MMMM')}</option>
                   })}
                   </Select>
                 </FormControl>
@@ -224,9 +226,10 @@ const Home:React.FC = () => {
                     onChange={handleYear}
                     input={<Input id="demo-dialog-native" />}
                   >
+                    
                     {[...new Array(4)].map((_, i) => {
-                      console.log(i)
-                      return <option value={i}>{dayjs().add(-i, 'year').format('YYYY')}</option>
+                      // console.log(i)
+                      return <option value={dayjs().add(0-i, 'year').format('YYYY')}>{dayjs().add(0-i, 'year').format('YYYY')}</option>
                     })}
                   </Select>
                 </FormControl>
