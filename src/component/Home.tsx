@@ -57,10 +57,10 @@ const Home:React.FC = () => {
     });
     const chacktoken = async() => {
       if(token !==undefined){
-        let infouser = await axios.post(`http://34.87.152.9:5000/equip_table/user`,{ token: `${token}`}) 
+        let infouser = await axios.post(`http://localhost:5000/equip_table/user`,{ token: `${token}`}) 
         // console.log(infouser.data)
         setuserinfo(infouser.data)
-        let infodata = await axios.get(`http://34.87.152.9:5000/equip_table/${infouser.data.KKS1_factory}`) 
+        let infodata = await axios.get(`http://localhost:5000/equip_table/${infouser.data.KKS1_factory}`) 
         // console.log(infodata.data)
         setState((prev) => ({ ...prev, data : infodata.data}))
       }else{
