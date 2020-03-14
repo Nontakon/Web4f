@@ -8,7 +8,7 @@ import MaterialTable, { Column } from 'material-table';
 import Button from "@material-ui/core/Button";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Cookies from "js-cookie";
-import Dialog, { DialogProps } from '@material-ui/core/Dialog';
+import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -57,10 +57,10 @@ const Home:React.FC = () => {
     });
     const chacktoken = async() => {
       if(token !==undefined){
-        let infouser = await axios.post(`http://localhost:5000/equip_table/user`,{ token: `${token}`}) 
+        let infouser = await axios.post(`http://34.87.152.9:5000/equip_table/user`,{ token: `${token}`}) 
         // console.log(infouser.data)
         setuserinfo(infouser.data)
-        let infodata = await axios.get(`http://localhost:5000/equip_table/${infouser.data.KKS1_factory}`) 
+        let infodata = await axios.get(`http://34.87.152.9:5000/equip_table/${infouser.data.KKS1_factory}`) 
         // console.log(infodata.data)
         setState((prev) => ({ ...prev, data : infodata.data}))
       }else{
@@ -99,7 +99,7 @@ const Home:React.FC = () => {
          
         }catch(e){
           console.log(e)
-          console.log(e)
+          // console.log(e)
         }
     }
     fetching()
@@ -131,10 +131,6 @@ const Home:React.FC = () => {
     console.log(year)
     setOpen(false);  
     };
-
-  const [fullWidth, setFullWidth] = React.useState(true);
-
-    const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('md');
 
     return (
       <div>
@@ -194,10 +190,7 @@ const Home:React.FC = () => {
           <Button variant="outlined" color="primary" onClick={handleClickOpen}>
             Export
       </Button>
-          <Dialog 
-            fullWidth={fullWidth}
-            maxWidth={maxWidth}
-            open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
+          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Withdraw Log</DialogTitle>
             <DialogContent>
               <DialogContentText>
@@ -265,8 +258,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
       display: 'flex',
-      width: 'fit-content',
-      margin: 'auto',
+      flexWrap: 'wrap',
     },
     formControl: {
       margin: theme.spacing(1),
