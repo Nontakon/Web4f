@@ -85,10 +85,12 @@ const Home:React.FC = () => {
     const [withdrawLog, setWithdrawLog] = React.useState<TableWithdraw>({
       columns: [
         { title: 'NameEmployee', field: 'NameEmployee' },
-        { title: 'IDEmployee', field: 'IDEmployee' },
+        { title: 'LastnameEmployee', field: 'LastnameEmployee' },
         { title: 'NameEquip',field: 'NameEquip',},
+        { title: 'IDEmployee', field: 'IDEmployee' },
         { title: 'KKSCode',field: 'KKSCode',},
         { title: 'DateWithdraw',field: 'DateWithdraw',},
+        { title: 'CountWithdraw',field: 'CountWithdraw',}
       ],
       data: [],
     });
@@ -96,7 +98,9 @@ const Home:React.FC = () => {
       const fetching = async()=>{
         try{
           chacktoken()
-         
+          let infowithdraw = await axios.get(`http://localhost:5000/selectwithdraw/${year}-${month}`)
+          console.log(infowithdraw.data)
+          setWithdrawLog((prev) => ({ ...prev, data : infowithdraw.data})) 
         }catch(e){
           console.log(e)
           // console.log(e)
@@ -106,9 +110,10 @@ const Home:React.FC = () => {
     },[])
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const [month, setMonth] = React.useState<number | string>('');
-    const [year, setYear] = React.useState<number | string>('');
-
+    const MonthNow = dayjs().format('M')
+    const [month, setMonth] = React.useState<number | string>(MonthNow);
+    const YearNow = dayjs().format('YYYY')
+    const [year, setYear] = React.useState<number | string>(YearNow);
     const handleMonth = (event: React.ChangeEvent<{ value: unknown }>) => {
       setMonth(Number(event.target.value) || '');
     console.log(month);
