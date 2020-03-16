@@ -94,20 +94,7 @@ const Home:React.FC = () => {
       ],
       data: [],
     });
-    useEffect(()=>{
-      const fetching = async()=>{
-        try{
-          chacktoken()
-          let infowithdraw = await axios.get(`http://localhost:5000/selectwithdraw/${year}-${month}`)
-          console.log(infowithdraw.data)
-          setWithdrawLog((prev) => ({ ...prev, data : infowithdraw.data})) 
-        }catch(e){
-          console.log(e)
-          // console.log(e)
-        }
-    }
-    fetching()
-    },[])
+   
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const MonthNow = dayjs().format('M')
@@ -115,6 +102,20 @@ const Home:React.FC = () => {
     const [month, setMonth] = React.useState<number | string>(MonthNow);
     const YearNow = dayjs().format('YYYY')
     const [year, setYear] = React.useState<number | string>(YearNow);
+  useEffect(() => {
+    const fetching = async () => {
+      try {
+        chacktoken()
+        let infowithdraw = await axios.get(`http://localhost:5000/selectwithdraw/${year}-${month}`)
+        console.log(infowithdraw.data)
+        setWithdrawLog((prev) => ({ ...prev, data: infowithdraw.data }))
+      } catch (e) {
+        console.log(e)
+        // console.log(e)
+      }
+    }
+    fetching()
+  }, [year, month])
     const handleMonth = (event: React.ChangeEvent<{ value: unknown }>) => {
       setMonth(Number(event.target.value) || '');
     console.log(month);
