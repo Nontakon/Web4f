@@ -8,7 +8,7 @@ import MaterialTable, { Column } from 'material-table';
 import Button from "@material-ui/core/Button";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Cookies from "js-cookie";
-import Dialog from '@material-ui/core/Dialog';
+import Dialog, { DialogProps } from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -111,6 +111,7 @@ const Home:React.FC = () => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const MonthNow = dayjs().format('M')
+  // const MonthNow = 2
     const [month, setMonth] = React.useState<number | string>(MonthNow);
     const YearNow = dayjs().format('YYYY')
     const [year, setYear] = React.useState<number | string>(YearNow);
@@ -136,6 +137,10 @@ const Home:React.FC = () => {
     console.log(year)
     setOpen(false);  
     };
+
+    const [fullWidth, setFullWidth] = React.useState(true);
+
+    const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('lg');
 
     return (
       <div>
@@ -195,7 +200,10 @@ const Home:React.FC = () => {
           <Button variant="outlined" color="primary" onClick={handleClickOpen}>
             Export
       </Button>
-          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+          <Dialog
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
+            open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
             <DialogTitle id="form-dialog-title">Withdraw Log</DialogTitle>
             <DialogContent>
               <DialogContentText>
@@ -264,6 +272,8 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
       display: 'flex',
       flexWrap: 'wrap',
+      width: 'fit-content',
+      margin: 'auto',
     },
     formControl: {
       margin: theme.spacing(1),
