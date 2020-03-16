@@ -34,10 +34,12 @@ interface PartInfo {
 }
 interface WithdrawInfo {
   NameEmployee: string
+  LastNameEmployee : string
   IDEmployee: string
+  NameEquip: string
   KKS: string
-  KKSCode: number
-  DateWithdraw: Date | string
+  Date_withdraw: Date | string
+  CountWithdraw: number
 }
 interface TableState {
   columns: Array<Column<PartInfo>>;
@@ -86,13 +88,13 @@ const Home:React.FC = () => {
     });
     const [withdrawLog, setWithdrawLog] = React.useState<TableWithdraw>({
       columns: [
-        { title: 'NameEmployee', field: 'NameEmployee' },
-        { title: 'LastnameEmployee', field: 'LastnameEmployee' },
-        { title: 'NameEquip',field: 'NameEquip',},
-        { title: 'IDEmployee', field: 'IDEmployee' },
-        { title: 'KKSCode',field: 'KKSCode',},
-        { title: 'DateWithdraw',field: 'DateWithdraw',},
-        { title: 'CountWithdraw',field: 'CountWithdraw',}
+        { title: 'NameEmployee', field: 'NameEmp' },
+        { title: 'LastNameEmployee', field: 'LastNameEmp' },
+        { title: 'IDEmployee',field: 'IDEmp',},
+        { title: 'NameEquipment', field: 'NameEquip' },
+        { title: 'KKSCode',field: 'KKS_Equip_Withdraw',},
+        { title: 'DateWithdraw',field: 'Date_withdraw',},
+        { title: 'CountWithdraw',field: 'Count_withdraw',}
       ],
       data: [],
     });
@@ -281,9 +283,9 @@ const Home:React.FC = () => {
                 title=""
                 style={{ borderRadius: "15" }}
                 columns={withdrawLog.columns}
-                data={withdrawLog.data.map(({ DateWithdraw, ...rest }) => ({
+                data={withdrawLog.data.map(({Date_withdraw, ...rest }) => ({
                   ...rest,
-                  DateWithdraw: dayjs(DateWithdraw).format("DD/MM/YYYY")
+                  Date_withdraw: dayjs(Date_withdraw).format("DD/MM/YYYY")
                 }))}
               />
             </DialogContent>
