@@ -33,13 +33,13 @@ interface PartInfo {
   CountStock: number
 }
 interface WithdrawInfo {
-  NameEmployee: string
-  LastNameEmployee : string
-  IDEmployee: string
+  NameEmp: string
+  LastNameEmp : string
+  IDEmp: string
   NameEquip: string
-  KKS: string
+  KKS_Equip_Withdraw: string
   Date_withdraw: Date | string
-  CountWithdraw: number
+  Count_withdraw: number
 }
 interface TableState {
   columns: Array<Column<PartInfo>>;
@@ -59,6 +59,11 @@ const Home:React.FC = () => {
       Position: '',
       KKS1_factory: ''
     });
+
+    function remove_last_character(element:String){
+      return element.slice(0, element.length - 1)
+    }
+
     const chacktoken = async() => {
       if(token !==undefined){
         let infouser = await axios.post(`http://localhost:5000/equip_table/user`,{ token: `${token}`}) 
@@ -77,26 +82,26 @@ const Home:React.FC = () => {
     }
     const [state, setState] = React.useState<TableState>({
       columns: [
-        { title: 'NameEquip', field: 'NameEquip' },
-        { title: 'KKS', field: 'KKS' },
+        { title: 'Equipment', field: 'NameEquip' },
+        { title: 'KKSCode', field: 'KKS' },
         { title: 'DateStart',field: 'DateStart',},
         { title: 'DateExpired',field: 'DateExpired',},
-        { title: 'Life_time',field: 'Life_time',},
-        { title: 'CountStock',field: 'CountStock',},
+        { title: 'Life time',field: 'Life_time',},
+        { title: 'Stock',field: 'CountStock',},
       ],
       data: [],
     });
     const [withdrawLog, setWithdrawLog] = React.useState<TableWithdraw>({
       columns: [
-        { title: 'NameEmployee', field: 'NameEmp' },
-        { title: 'LastNameEmployee', field: 'LastNameEmp' },
-        { title: 'IDEmployee',field: 'IDEmp',},
-        { title: 'NameEquipment', field: 'NameEquip' },
-        { title: 'KKSCode',field: 'KKS_Equip_Withdraw',},
-        { title: 'DateWithdraw',field: 'Date_withdraw',},
-        { title: 'CountWithdraw',field: 'Count_withdraw',}
+        { title: "Name", field: "NameEmp" },
+        { title: "Lastname", field: "LastNameEmp" },
+        { title: "ID", field: "IDEmp" },
+        { title: "Equipment", field: "NameEquip" },
+        { title: "KKSCode", field: "KKS_Equip_Withdraw" },
+        { title: "Date", field: "Date_withdraw" },
+        { title: "Quantity", field: "Count_withdraw" }
       ],
-      data: [],
+      data: []
     });
 
     
@@ -140,11 +145,30 @@ const Home:React.FC = () => {
     };
 
     const showmonth = () => {
-    // const dataexcel = withdrawLog.data.map(({}))
-    const ws = XLSX.utils.json_to_sheet(withdrawLog.data)
+    const dataexcel = withdrawLog.data.map(
+      ({
+        NameEmp,
+        LastNameEmp,
+        IDEmp,
+        NameEquip,
+        KKS_Equip_Withdraw,
+        Date_withdraw,
+        Count_withdraw
+      }) => ({
+        Name : NameEmp,
+        Lastname : LastNameEmp,
+        ID : IDEmp,
+        Equipment : NameEquip,
+        KKSCode : KKS_Equip_Withdraw,
+        Date : dayjs(Date_withdraw).format("DD/MM/YYYY HH:mm:ss"),
+        Quantity : Count_withdraw,
+
+      })
+    );
+    const ws = XLSX.utils.json_to_sheet(dataexcel);
     const wb = XLSX.utils.book_new()
     XLSX.utils.book_append_sheet(wb,ws,'SheetJS')
-    XLSX.writeFile(wb,`test.xlsx`)
+    XLSX.writeFile(wb,`WithdrawReport : ${month}-${year} .xlsx`)
     setOpen(false);  
     };
 
@@ -167,7 +191,7 @@ const Home:React.FC = () => {
         <Viewtable>
           <Infoview>
             {userinfo.NameEmp} &nbsp;{userinfo.LastNameEmp} &nbsp; factory :{" "}
-            {userinfo.KKS1_factory}{" "}
+            {remove_last_character(userinfo.KKS1_factory)}{" "}
           </Infoview>
           <MaterialTable
             title="EquipmentData"
