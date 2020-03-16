@@ -20,7 +20,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import XLSX from 'xlsx';
 // import { Grid } from '@material-ui/core';
+
 
 interface PartInfo {
   KKS: string
@@ -94,6 +96,8 @@ const Home:React.FC = () => {
       ],
       data: [],
     });
+
+    
    
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
@@ -134,8 +138,11 @@ const Home:React.FC = () => {
     };
 
     const showmonth = () => {
-    console.log(month);
-    console.log(year)
+    // const dataexcel = withdrawLog.data.map(({}))
+    const ws = XLSX.utils.json_to_sheet(withdrawLog.data)
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb,ws,'SheetJS')
+    XLSX.writeFile(wb,`test.xlsx`)
     setOpen(false);  
     };
 
@@ -147,13 +154,22 @@ const Home:React.FC = () => {
       <div>
         <Headnav>
           <Label>Warehouse</Label>
-          <Logoutbut color="inherit" onClick={logout} startIcon={<ExitToAppIcon/>}>Log out</Logoutbut>
+          <Logoutbut
+            color="inherit"
+            onClick={logout}
+            startIcon={<ExitToAppIcon />}
+          >
+            Log out
+          </Logoutbut>
         </Headnav>
         <Viewtable>
-          <Infoview>{userinfo.NameEmp} &nbsp;{userinfo.LastNameEmp} &nbsp; factory : {userinfo.KKS1_factory} </Infoview>
+          <Infoview>
+            {userinfo.NameEmp} &nbsp;{userinfo.LastNameEmp} &nbsp; factory :{" "}
+            {userinfo.KKS1_factory}{" "}
+          </Infoview>
           <MaterialTable
             title="EquipmentData"
-            style={{ borderRadius: "15"}}
+            style={{ borderRadius: "15" }}
             columns={state.columns}
             data={state.data.map(({ DateStart, DateExpired, ...rest }) => ({
               ...rest,
@@ -200,16 +216,17 @@ const Home:React.FC = () => {
           />
           <Button variant="outlined" color="primary" onClick={handleClickOpen}>
             Export
-      </Button>
+          </Button>
           <Dialog
             fullWidth={fullWidth}
             maxWidth={maxWidth}
-            open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="form-dialog-title"
+          >
             <DialogTitle id="form-dialog-title">Withdraw Log</DialogTitle>
             <DialogContent>
-              <DialogContentText>
-                Insert month and year
-              </DialogContentText>
+              <DialogContentText>Insert month and year</DialogContentText>
               <form>
                 <FormControl className={classes.formControl}>
                   <InputLabel htmlFor="demo-dialog-native">Month</InputLabel>
@@ -219,10 +236,20 @@ const Home:React.FC = () => {
                     onChange={handleMonth}
                     input={<Input id="demo-dialog-native" />}
                   >
-                    {[...new Array(12)].map((_,i)=>{
-                    // console.log(i)
-                      return <option value={dayjs().add(0-i, 'month').format('M')}>{dayjs().add(0-i,'month').format('MMMM')}</option>
-                  })}
+                    {[...new Array(12)].map((_, i) => {
+                      // console.log(i)
+                      return (
+                        <option
+                          value={dayjs()
+                            .add(0 - i, "month")
+                            .format("M")}
+                        >
+                          {dayjs()
+                            .add(0 - i, "month")
+                            .format("MMMM")}
+                        </option>
+                      );
+                    })}
                   </Select>
                 </FormControl>
                 <FormControl className={classes.formControl}>
@@ -233,32 +260,40 @@ const Home:React.FC = () => {
                     onChange={handleYear}
                     input={<Input id="demo-dialog-native" />}
                   >
-                    
                     {[...new Array(4)].map((_, i) => {
                       // console.log(i)
-                      return <option value={dayjs().add(0-i, 'year').format('YYYY')}>{dayjs().add(0-i, 'year').format('YYYY')}</option>
+                      return (
+                        <option
+                          value={dayjs()
+                            .add(0 - i, "year")
+                            .format("YYYY")}
+                        >
+                          {dayjs()
+                            .add(0 - i, "year")
+                            .format("YYYY")}
+                        </option>
+                      );
                     })}
                   </Select>
                 </FormControl>
-
               </form>
               <MaterialTable
                 title=""
-                style={{ borderRadius: "15"}}
+                style={{ borderRadius: "15" }}
                 columns={withdrawLog.columns}
-                data={withdrawLog.data.map(({DateWithdraw, ...rest }) => ({
+                data={withdrawLog.data.map(({ DateWithdraw, ...rest }) => ({
                   ...rest,
                   DateWithdraw: dayjs(DateWithdraw).format("DD/MM/YYYY")
                 }))}
-          />
+              />
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} color="primary">
+              <Button onClick={handleClose} color="primary">
                 Cancel
-                </Button>
-                <Button onClick={showmonth} color="primary">
+              </Button>
+              <Button onClick={showmonth} color="primary">
                 Export
-                </Button>
+              </Button>
             </DialogActions>
           </Dialog>
         </Viewtable>
