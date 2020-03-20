@@ -144,12 +144,12 @@ const Home:React.FC = () => {
     setOpen(false);
     };
 
-  const handleClickOpenAdd = () => {
+    const handleClickOpenAdd = () => {
     setOpen(true);
-  };
-  const handleCloseAdd = () => {
+    };
+    const handleCloseAdd = () => {
     setOpen(false);
-  };
+    };
 
     const showmonth = () => {
     const dataexcel = withdrawLog.data.map(
@@ -329,6 +329,19 @@ const Home:React.FC = () => {
               </Button>
             </DialogActions>
           </Dialog>
+          {/* <Button variant="outlined" color="primary" onClick={handleClickOpenAdd}>
+            Add
+          </Button>
+          <Dialog
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
+            open={open}
+            onClose={handleCloseAdd}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title">Withdraw Log</DialogTitle>
+
+          </Dialog> */}
         </Viewtable>
       </div>
     );
