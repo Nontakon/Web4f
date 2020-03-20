@@ -144,6 +144,13 @@ const Home:React.FC = () => {
     setOpen(false);
     };
 
+  const handleClickOpenAdd = () => {
+    setOpen(true);
+  };
+  const handleCloseAdd = () => {
+    setOpen(false);
+  };
+
     const showmonth = () => {
     const dataexcel = withdrawLog.data.map(
       ({
@@ -168,7 +175,7 @@ const Home:React.FC = () => {
     const ws = XLSX.utils.json_to_sheet(dataexcel);
     const wb = XLSX.utils.book_new()
     XLSX.utils.book_append_sheet(wb,ws,'SheetJS')
-    XLSX.writeFile(wb,`WithdrawReport : b ${month}-${year} .xlsx`)
+    XLSX.writeFile(wb,`WithdrawReport : ${month}-${year} .xlsx`)
     setOpen(false);  
     };
 
