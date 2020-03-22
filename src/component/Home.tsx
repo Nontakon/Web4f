@@ -21,9 +21,48 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import XLSX from 'xlsx';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 // import { Grid } from '@material-ui/core';
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: any;
+  value: any;
+}
 
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <Typography
+      component="div"
+      role="tabpanel"
+      hidden={value !== index}
+      id={`wrapped-tabpanel-${index}`}
+      aria-labelledby={`wrapped-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box p={2}>{children}</Box>}
+    </Typography>
+  );
+}
+
+function a11yProps(index: any) {
+  return {
+    id: `wrapped-tab-${index}`,
+    'aria-controls': `wrapped-tabpanel-${index}`,
+  };
+}
+
+const [valuetab, setValuetab] = React.useState('one'); //problem
+
+const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
+  setValuetab(newValue);
+};
 interface PartInfo {
   KKS: string
   NameEquip: string
@@ -329,7 +368,7 @@ const Home:React.FC = () => {
               </Button>
             </DialogActions>
           </Dialog>
-          {/* <Button variant="outlined" color="primary" onClick={handleClickOpenAdd}>
+          <Button variant="outlined" color="primary" onClick={handleClickOpenAdd}>
             Add
           </Button>
           <Dialog
@@ -339,9 +378,31 @@ const Home:React.FC = () => {
             onClose={handleCloseAdd}
             aria-labelledby="form-dialog-title"
           >
-            <DialogTitle id="form-dialog-title">Withdraw Log</DialogTitle>
+            <div className={classes.root}>
+              <AppBar position="static">
+                <Tabs value={valuetab} onChange={handleChange} aria-label="wrapped label tabs example">
+                  <Tab
+                    value="one"
+                    label="Add"
+                    wrapped
+                    {...a11yProps('one')}
+                  />
+                  <Tab 
+                    value="two" 
+                    label="Return"
+                    wrapped
+                    {...a11yProps('two')} />
+                </Tabs>
+              </AppBar>
+              <TabPanel value={valuetab} index="one">
+                Item One
+              </TabPanel>
+              <TabPanel value={valuetab} index="two">
+                Item Two
+              </TabPanel>
+            </div>
 
-          </Dialog> */}
+          </Dialog>
         </Viewtable>
       </div>
     );
@@ -360,6 +421,10 @@ const useStyles = makeStyles((theme: Theme) =>
     formControl: {
       margin: theme.spacing(1),
       minWidth: 120,
+    },
+    root: {
+      flexGrow: 1,
+      backgroundColor: theme.palette.background.paper,
     },
   }),
 );
