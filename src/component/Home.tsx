@@ -143,6 +143,7 @@ const Home:React.FC = () => {
    
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const [openadd, setOpenadd] = React.useState(false);
     const MonthNow = dayjs().format('M')
   // const MonthNow = 2
     const [month, setMonth] = React.useState<number | string>(MonthNow);
@@ -180,10 +181,10 @@ const Home:React.FC = () => {
     };
 
     const handleClickOpenAdd = () => {
-    setOpen(true);
+    setOpenadd(true);
     };
     const handleCloseAdd = () => {
-    setOpen(false);
+    setOpenadd(false);
     };
 
     const showmonth = () => {
@@ -376,7 +377,7 @@ const Home:React.FC = () => {
           <Dialog
             fullWidth={fullWidth}
             maxWidth={maxWidth}
-            open={open}
+            open={openadd}
             onClose={handleCloseAdd}
             aria-labelledby="form-dialog-title"
           >
