@@ -58,11 +58,7 @@ function a11yProps(index: any) {
   };
 }
 
-const [valuetab, setValuetab] = React.useState('one'); //problem
 
-const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
-  setValuetab(newValue);
-};
 interface PartInfo {
   KKS: string
   NameEquip: string
@@ -221,6 +217,12 @@ const Home:React.FC = () => {
     const [fullWidth, setFullWidth] = React.useState(true);
 
     const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('lg');
+
+  const [valuetab, setValuetab] = React.useState('one'); //problem
+
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
+    setValuetab(newValue);
+  };
 
     return (
       <div>
