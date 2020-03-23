@@ -104,12 +104,9 @@ const Home:React.FC = () => {
       data: []
     });
 
-    
-   
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const MonthNow = dayjs().format('M')
-  // const MonthNow = 2
     const [month, setMonth] = React.useState<number | string>(MonthNow);
     const YearNow = dayjs().format('YYYY')
     const [year, setYear] = React.useState<number | string>(YearNow);
@@ -202,43 +199,6 @@ const Home:React.FC = () => {
               DateStart: dayjs(DateStart).format("DD/MM/YYYY"),
               DateExpired: dayjs(DateExpired).format("DD/MM/YYYY")
             }))}
-            editable={{
-              onRowAdd: newData =>
-                new Promise(resolve => {
-                  setTimeout(() => {
-                    resolve();
-                    setState(prevState => {
-                      const data = [...prevState.data];
-                      data.push(newData);
-                      return { ...prevState, data };
-                    });
-                  }, 600);
-                }),
-              onRowUpdate: (newData, oldData) =>
-                new Promise(resolve => {
-                  setTimeout(() => {
-                    resolve();
-                    if (oldData) {
-                      setState(prevState => {
-                        const data = [...prevState.data];
-                        data[data.indexOf(oldData)] = newData;
-                        return { ...prevState, data };
-                      });
-                    }
-                  }, 600);
-                }),
-              onRowDelete: oldData =>
-                new Promise(resolve => {
-                  setTimeout(() => {
-                    resolve();
-                    setState(prevState => {
-                      const data = [...prevState.data];
-                      data.splice(data.indexOf(oldData), 1);
-                      return { ...prevState, data };
-                    });
-                  }, 600);
-                })
-            }}
           />
           <Button variant="outlined" color="primary" onClick={handleClickOpen}>
             Export
