@@ -219,11 +219,17 @@ const Home:React.FC = () => {
 
     const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('lg');
 
-  const [valuetab, setValuetab] = React.useState('one'); //problem
+    const [valuetab, setValuetab] = React.useState('one'); //problem
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
-    setValuetab(newValue);
-  };
+    const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
+      setValuetab(newValue);
+    };
+
+    const [equipName, setEquipName] = React.useState<string[]>([]);
+
+    const handleChangeEquip = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setEquipName(event.target.value as string[]);
+    };
 
     return (
       <div>
@@ -398,7 +404,26 @@ const Home:React.FC = () => {
                 </Tabs>
               </AppBar>
               <TabPanel value={valuetab} index="one">
-                Item One
+                {/* <form>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="demo-dialog-native">Equipment</InputLabel>
+                    <Select
+                      native
+                      value={equipName}
+                      onChange={handleChangeEquip}
+                      input={<Input id="demo-dialog-native" />}
+                    >
+                      <option aria-label="None" value="" />
+                      <option value={10}>Ten</option>
+                      <option value={20}>Twenty</option>
+                      <option value={30}>Thirty</option>
+                    </Select>
+                  </FormControl>
+                </form> */}
+                <TextField id="standard-basic" label="Quantity" />
+                <Button onClick={handleCloseAdd} color="primary">
+                  Cancel
+                </Button>
               </TabPanel>
               <TabPanel value={valuetab} index="two">
                 Item Two
