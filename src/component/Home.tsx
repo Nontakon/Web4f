@@ -404,7 +404,7 @@ const Home:React.FC = () => {
                 </Tabs>
               </AppBar>
               <TabPanel value={valuetab} index="one">
-                {/* <form>
+                <form>
                   <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="demo-dialog-native">Equipment</InputLabel>
                     <Select
@@ -419,7 +419,7 @@ const Home:React.FC = () => {
                       <option value={30}>Thirty</option>
                     </Select>
                   </FormControl>
-                </form> */}
+                </form>
                 <TextField id="standard-basic" label="Quantity" />
                 <Button onClick={handleCloseAdd} color="primary">
                   Cancel
