@@ -24,9 +24,9 @@ interface WithdrawInfo {
     LastNameEmp: string;
     IDEmp: string;
     NameEquip: string;
-    KKS_Equip_Withdraw: string;
-    Date_withdraw: Date | string;
-    Count_withdraw: number;
+    Process: string;
+    DateLog: Date | string;
+    CountLog: number;
 }
 
 interface TableWithdraw {
@@ -42,9 +42,9 @@ export const DialogExport: React.FC = () => {
             { title: "Lastname", field: "LastNameEmp" },
             { title: "ID", field: "IDEmp" },
             { title: "Equipment", field: "NameEquip" },
-            { title: "KKSCode", field: "KKS_Equip_Withdraw" },
-            { title: "Date", field: "Date_withdraw" },
-            { title: "Quantity", field: "Count_withdraw" }
+            { title: "Process", field: "Process" },
+            { title: "Date", field: "DateLog" },
+            { title: "Quantity", field: "CountLog" }
         ],
         data: []
     });
@@ -65,7 +65,7 @@ export const DialogExport: React.FC = () => {
         const fetching = async () => {
             try {
                 let infowithdraw = await axios.get(
-                    `http://localhost:5000/selectwithdraw/${year}-${month}`
+                    `http://localhost:5000/selectlog/${year}-${month}`
                 );
                 console.log(infowithdraw.data);
                 setWithdrawLog(prev => ({ ...prev, data: infowithdraw.data }));
@@ -88,17 +88,17 @@ export const DialogExport: React.FC = () => {
                 LastNameEmp,
                 IDEmp,
                 NameEquip,
-                KKS_Equip_Withdraw,
-                Date_withdraw,
-                Count_withdraw
+                Process,
+                DateLog,
+                CountLog
             }) => ({
                 Name: NameEmp,
                 Lastname: LastNameEmp,
                 ID: IDEmp,
                 Equipment: NameEquip,
-                KKSCode: KKS_Equip_Withdraw,
-                Date: dayjs(Date_withdraw).format("DD/MM/YYYY HH:mm:ss"),
-                Quantity: Count_withdraw
+                Process : Process,
+                Date: dayjs(DateLog).format("DD/MM/YYYY HH:mm:ss"),
+                Quantity: CountLog
             })
         );
         const ws = XLSX.utils.json_to_sheet(dataexcel);
@@ -119,7 +119,7 @@ export const DialogExport: React.FC = () => {
                 onClose={handleClose}
                 aria-labelledby="form-dialog-title"
             >
-                <DialogTitle id="form-dialog-title">Withdraw Log</DialogTitle>
+                <DialogTitle id="form-dialog-title">Inventory Log</DialogTitle>
                 <DialogContent>
                     <DialogContentText>Insert month and year</DialogContentText>
                     <form>
@@ -176,9 +176,9 @@ export const DialogExport: React.FC = () => {
                         title=""
                         style={{ borderRadius: "15" }}
                         columns={withdrawLog.columns}
-                        data={withdrawLog.data.map(({ Date_withdraw, ...rest }) => ({
+                        data={withdrawLog.data.map(({ DateLog, ...rest }) => ({
                             ...rest,
-                            Date_withdraw: dayjs(Date_withdraw).format("DD/MM/YYYY")
+                            DateLog: dayjs(DateLog).format("DD/MM/YYYY")
                         }))}
                     />
                 </DialogContent>
