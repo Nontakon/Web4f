@@ -7,12 +7,14 @@ import { Storeprovider } from "./store/storeprovider";
 
 function App() {
   /* Hello */
+
   return (
     <Storeprovider>
       <Router>
         <div>
+
           <Switch>
-            <Route path="/Home">
+            <Route path="/Home"> 
               <Home />
             </Route>
             <Route path="/">

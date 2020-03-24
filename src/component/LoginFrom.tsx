@@ -46,10 +46,13 @@ export default function LoginFrom() {
   const onSubmit = async (data: any) => {
     try {
       console.log(data)
-      const info = await axios.post(`http://localhost:5000/employee/web`,{ 
-        ID: `${data.id}`,
-        Pass: `${data.password}`
-      })
+      const info = await axios.post(
+        `${process.env.REACT_APP_SERVER_URI}employee/web`,
+        {
+          ID: `${data.id}`,
+          Pass: `${data.password}`
+        }
+      );
       console.log(info);
       addKKS1(info.data.KKS1)
       adduserName(info.data.user)
