@@ -47,7 +47,7 @@ export default function LoginFrom() {
     try {
       console.log(data)
       const info = await axios.post(
-        `${process.env.REACT_APP_SERVER_URI}employee/web`,
+        `employee/web`,
         {
           ID: `${data.id}`,
           Pass: `${data.password}`
