@@ -20,7 +20,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import  DialogExport  from "./Home/components/DialogExport";
+import DialogExport from "./Home/components/DialogExport";
 // import { Grid } from '@material-ui/core';
 
 interface TabPanelProps {
@@ -85,13 +85,13 @@ const Home: React.FC = () => {
   const chacktoken = async () => {
     if (token !== undefined) {
       let infouser = await axios.post(
-        `equip_table/user`,
+        `${process.env.REACT_APP_SERVER_URI}equip_table/user`,
         { token: `${token}` }
       );
       // console.log(infouser.data)
       setuserinfo(infouser.data);
       let infodata = await axios.get(
-        `equip_table/${infouser.data.KKS1_factory}`
+        `${process.env.REACT_APP_SERVER_URI}equip_table/${infouser.data.KKS1_factory}`
       );
       // console.log(infodata.data)
       setState(prev => ({ ...prev, data: infodata.data }));
