@@ -47,7 +47,7 @@ export default function LoginFrom() {
     try {
       console.log(data)
       const info = await axios.post(
-        `:5000/employee/web`,
+        `employee/web`,
         {
           ID: `${data.id}`,
           Pass: `${data.password}`

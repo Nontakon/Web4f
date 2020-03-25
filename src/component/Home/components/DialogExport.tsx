@@ -65,7 +65,7 @@ export const DialogExport: React.FC = () => {
         const fetching = async () => {
             try {
                 let infowithdraw = await axios.get(
-                    `:5000/selectlog/${year}-${month}`
+                    `selectlog/${year}-${month}`
                 );
                 console.log(infowithdraw.data);
                 setWithdrawLog(prev => ({ ...prev, data: infowithdraw.data }));
