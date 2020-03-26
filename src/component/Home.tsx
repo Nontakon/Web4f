@@ -77,6 +77,8 @@ const Home: React.FC = () => {
     Position: "",
     KKS1_factory: ""
   });
+  const CountAdd = 0;
+  const [count,setCount] = React.useState<number>(CountAdd);
 
   function remove_last_character(element: String) {
     return element.slice(0, element.length - 1);
