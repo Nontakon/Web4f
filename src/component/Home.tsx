@@ -130,6 +130,10 @@ const Home: React.FC = () => {
     setOpenadd(false);
   };
 
+  const handleAdd = () => {
+    console.log(equipName)
+  }
+
   const [valuetab, setValuetab] = React.useState("one"); //problem
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
@@ -242,13 +246,16 @@ const Home: React.FC = () => {
                     input={<Input id="demo-dialog-native" />}
                   >
                     <option aria-label="None" value="" />
-                    <option value={10}>Ten</option>
-                    <option value={20}>Twenty</option>
-                    <option value={30}>Thirty</option>
+                    <option value={'valve'}>Valve</option>
+                    <option value={'Flow rate meter'}>Flow rate meter</option>
+                    <option value={'Pressure meter'}>Pressure meter</option>
                   </Select>
                 </FormControl>
               </form>
               <TextField id="standard-basic" label="Quantity" />
+              <Button onClick={handleAdd} color="primary">
+                Add
+              </Button>
               <Button onClick={handleCloseAdd} color="primary">
                 Cancel
               </Button>
