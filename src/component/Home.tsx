@@ -134,6 +134,7 @@ const Home: React.FC = () => {
 
   const handleAdd = () => {
     console.log(equipName)
+    console.log(count)
   }
 
   const [valuetab, setValuetab] = React.useState("one"); //problem
@@ -147,7 +148,9 @@ const Home: React.FC = () => {
   const handleChangeEquip = (event: React.ChangeEvent<{ value: unknown }>) => {
     setEquipName(event.target.value as string[]);
   };
-
+  const handleChangeQuantity = (event: React.ChangeEvent<{ value: unknown }>) =>{
+    setCount(event.target.value as number);
+  }
   return (
     <div>
       <Headnav>
@@ -216,8 +219,9 @@ const Home: React.FC = () => {
                     <option value={'Pressure meter'}>Pressure meter</option>
                   </Select>
                 </FormControl>
+                <TextField id="standard-basic" label="Quantity" onChange={handleChangeQuantity} />
               </form>
-              <TextField id="standard-basic" label="Quantity" />
+              
               <Button onClick={handleAdd} color="primary">
                 Add
               </Button>
