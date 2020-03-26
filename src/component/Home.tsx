@@ -137,6 +137,12 @@ const Home: React.FC = () => {
     console.log(count)
   }
 
+  const handleId = () => {
+    console.log(idemp)
+    console.log(equipName)
+    console.log(count)
+  }
+
   const [valuetab, setValuetab] = React.useState("one"); //problem
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
@@ -151,7 +157,12 @@ const Home: React.FC = () => {
   const handleChangeQuantity = (event: React.ChangeEvent<{ value: unknown }>) =>{
     setCount(event.target.value as number);
   }
-  
+  const IdEmp = 0;
+  const [idemp, setID] = React.useState<number>(IdEmp);
+  const handleChangeID = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setID(event.target.value as number);
+  }
+
   return (
     <div>
       <Headnav>
@@ -222,7 +233,6 @@ const Home: React.FC = () => {
                 </FormControl>
                 <TextField id="standard-basic" label="Quantity" className={classes.formControl} onChange={handleChangeQuantity} />
               </form>
-              
               <Button onClick={handleAdd} color="primary">
                 Add
               </Button>
@@ -231,7 +241,29 @@ const Home: React.FC = () => {
               </Button>
             </TabPanel>
             <TabPanel value={valuetab} index="two">
-              Item Two
+              <form>
+                <TextField id="standard-basic" label="ID" className={classes.formControl} onChange={handleChangeID} />
+                <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor="demo-dialog-native">
+                    Equipment
+                  </InputLabel>
+                  <Select
+                    native
+                    value={equipName}
+                    onChange={handleChangeEquip}
+                    input={<Input id="demo-dialog-native" />}
+                  >
+                    <option aria-label="None" value="" />
+                    <option value={'valve'}>Valve</option>
+                    <option value={'Flow rate meter'}>Flow rate meter</option>
+                    <option value={'Pressure meter'}>Pressure meter</option>
+                  </Select>
+                </FormControl>
+                <TextField id="standard-basic" label="Quantity" className={classes.formControl} onChange={handleChangeQuantity} />
+              </form>
+              <Button onClick={handleId} color="primary">
+                Add
+              </Button>
             </TabPanel>
           </div>
         </Dialog>
