@@ -132,8 +132,8 @@ const Home: React.FC = () => {
   };
   var now = dayjs().format('YYYY-MM-DD HH:mm:ss')
   const handleAdd = async() => {
-    let dataInventory = await axios.post(`${process.env.REACT_APP_SERVER_URI}insertinventory/selectcount`,{ NameEquip: `${equipName}`,KKS1 : `${userinfo.KKS1_factory}`})
-    await axios.post(`${process.env.REACT_APP_SERVER_URI}insertinventory/`,{CountStock :`${dataInventory.data[0].CountStock + count.CountADD}`,KKS1 : `${userinfo.KKS1_factory}`,KKS4 : `${dataInventory.data[0].KKS4}`})
+    let dataInventory = await axios.post(`${process.env.REACT_APP_SERVER_URI}updateinventory/selectcount`,{ NameEquip: `${equipName}`,KKS1 : `${userinfo.KKS1_factory}`})
+    await axios.post(`${process.env.REACT_APP_SERVER_URI}updateinventory/`,{CountStock :`${dataInventory.data[0].CountStock + count.CountADD}`,KKS1 : `${userinfo.KKS1_factory}`,KKS4 : `${dataInventory.data[0].KKS4}`})
     await axios.post(`${process.env.REACT_APP_SERVER_URI}insertlog/`,{
       token: `${token}`,
       Process: 'AddEquipment',

@@ -81,7 +81,7 @@ export const DialogExport: React.FC = () => {
     const handleClose = () => {
         setOpen(false);
     };
-    const showmonth = () => {
+    const exportXlsx = () => {
         const dataexcel = withdrawLog.data.map(
             ({
                 NameEmp,
@@ -111,7 +111,7 @@ export const DialogExport: React.FC = () => {
         <>
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
                 Export
-</Button>
+            </Button>
             <Dialog
                 fullWidth
                 maxWidth={"lg"}
@@ -185,10 +185,10 @@ export const DialogExport: React.FC = () => {
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
                         Cancel
-</Button>
-                    <Button onClick={showmonth} color="primary">
+                    </Button>
+                    <Button onClick={exportXlsx} color="primary">
                         Export
-</Button>
+                    </Button>
                 </DialogActions>
             </Dialog>
         </>
