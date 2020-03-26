@@ -66,7 +66,9 @@ interface TableState {
   columns: Array<Column<PartInfo>>;
   data: PartInfo[];
 }
-
+interface CountAdd{
+  CountADD : number;
+}
 const Home: React.FC = () => {
   const { push } = useHistory();
   const { KKS1, userName, addKKS1, adduserName } = useContext(CounterContext);
@@ -77,9 +79,6 @@ const Home: React.FC = () => {
     Position: "",
     KKS1_factory: ""
   });
-  const CountAdd = 0;
-  const [count,setCount] = React.useState<number>(CountAdd);
-
   function remove_last_character(element: String) {
     return element.slice(0, element.length - 1);
   }
@@ -91,9 +90,9 @@ const Home: React.FC = () => {
         { token: `${token}` }
       );
       // console.log(infouser.data)
-      setuserinfo(infouser.data);
+      setuserinfo(infouser.data[0]);
       let infodata = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}equip_table/${infouser.data.KKS1_factory}`
+        `${process.env.REACT_APP_SERVER_URI}equip_table/${infouser.data[0].KKS1_factory}`
       );
       // console.log(infodata.data)
       setState(prev => ({ ...prev, data: infodata.data }));
@@ -131,13 +130,23 @@ const Home: React.FC = () => {
   const handleCloseAdd = () => {
     setOpenadd(false);
   };
-
-  const handleAdd = () => {
-    console.log(equipName)
-    console.log(count)
+  var now = dayjs().format('YYYY-MM-DD HH:mm:ss')
+  const handleAdd = async() => {
+    let dataInventory = await axios.post(`${process.env.REACT_APP_SERVER_URI}insertinventory/selectcount`,{ NameEquip: `${equipName}`,KKS1 : `${userinfo.KKS1_factory}`})
+    await axios.post(`${process.env.REACT_APP_SERVER_URI}insertinventory/`,{CountStock :`${dataInventory.data[0].CountStock + count.CountADD}`,KKS1 : `${userinfo.KKS1_factory}`,KKS4 : `${dataInventory.data[0].KKS4}`})
+    await axios.post(`${process.env.REACT_APP_SERVER_URI}insertlog/`,{
+      token: `${token}`,
+      Process: 'AddEquipment',
+      KKS1 : `${userinfo.KKS1_factory}`,
+      KKS4 : `${dataInventory.data[0].KKS4}`,
+      Countlog: `${count.CountADD}`,
+      Datelog : `${now}`
+    })
+    setOpenadd(false);
   }
 
   const handleId = () => {
+    console.log(now)
     console.log(idemp)
     console.log(equipName)
     console.log(count)
@@ -148,6 +157,7 @@ const Home: React.FC = () => {
   const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
     setValuetab(newValue);
   };
+  const [count,setCount] = React.useState<CountAdd>({CountADD:0});
 
   const [equipName, setEquipName] = React.useState<string[]>([]);
 
@@ -155,7 +165,7 @@ const Home: React.FC = () => {
     setEquipName(event.target.value as string[]);
   };
   const handleChangeQuantity = (event: React.ChangeEvent<{ value: unknown }>) =>{
-    setCount(event.target.value as number);
+    setCount({CountADD : parseInt(event.target.value as string ,10)});
   }
   const IdEmp = 0;
   const [idemp, setID] = React.useState<number>(IdEmp);
@@ -226,9 +236,9 @@ const Home: React.FC = () => {
                     input={<Input id="demo-dialog-native" />}
                   >
                     <option aria-label="None" value="" />
-                    <option value={'valve'}>Valve</option>
+                    <option value={'Valve'}>Valve</option>
                     <option value={'Flow rate meter'}>Flow rate meter</option>
-                    <option value={'Pressure meter'}>Pressure meter</option>
+                    <option value={'Presure meter'}>Presure meter</option>
                   </Select>
                 </FormControl>
                 <TextField id="standard-basic" label="Quantity" className={classes.formControl} onChange={handleChangeQuantity} />
