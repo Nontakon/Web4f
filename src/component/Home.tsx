@@ -151,6 +151,7 @@ const Home: React.FC = () => {
   const handleChangeQuantity = (event: React.ChangeEvent<{ value: unknown }>) =>{
     setCount(event.target.value as number);
   }
+  
   return (
     <div>
       <Headnav>
@@ -219,7 +220,7 @@ const Home: React.FC = () => {
                     <option value={'Pressure meter'}>Pressure meter</option>
                   </Select>
                 </FormControl>
-                <TextField id="standard-basic" label="Quantity" onChange={handleChangeQuantity} />
+                <TextField id="standard-basic" label="Quantity" className={classes.formControl} onChange={handleChangeQuantity} />
               </form>
               
               <Button onClick={handleAdd} color="primary">
