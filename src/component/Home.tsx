@@ -70,6 +70,9 @@ interface TableState {
 interface CountAdd{
   CountADD : number;
 }
+interface CountReturn{
+  CountReturn : number|any;
+}
 const Home: React.FC = () => {
   const { push } = useHistory();
   const { KKS1, userName, addKKS1, adduserName } = useContext(CounterContext);
@@ -97,6 +100,8 @@ const Home: React.FC = () => {
       );
       // console.log(infodata.data)
       setState(prev => ({ ...prev, data: infodata.data }));
+      let IDEmp = await axios.get(`${process.env.REACT_APP_SERVER_URI}returnwithdraw/allID`)
+      setID(IDEmp.data)
     } else {
       push("/LoginFrom");
     }
@@ -121,7 +126,7 @@ const Home: React.FC = () => {
 
   const [openadd, setOpenadd] = React.useState(false);
 
-  useEffect(() => {
+  useEffect(() =>{
     chacktoken();
   }, []);
 
@@ -148,10 +153,10 @@ const Home: React.FC = () => {
 
   const handleId = () => {
     console.log(now)
-    console.log(idemp)
-    console.log(equipName)
-    console.log(count)
-    console.log(returnq)
+    console.log(iduseSelect)
+    console.log(nameEquipSelect)
+    console.log(countwithdrawSelect)
+    console.log(broke)
   }
 
   const [valuetab, setValuetab] = React.useState("one"); //problem
@@ -169,22 +174,30 @@ const Home: React.FC = () => {
   const handleChangeQuantity = (event: React.ChangeEvent<{ value: unknown }>) =>{
     setCount({CountADD : parseInt(event.target.value as string ,10)});
   }
-  const max = 10;
-  const IdEmp = 0;
-  const [idemp, setID] = React.useState<number>(IdEmp);
-  const handleChangeID = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setID(event.target.value as number);
+
+  const [idemp, setID] = React.useState<string[]|any>([]);
+  const [iduseSelect, setIDselect] = React.useState<string[]>([]);
+  const [nameEquipforReturn, setnameEquipforReturn] = React.useState<string[]|any>([]);
+  const [nameEquipSelect, setnameEquipSelect] = React.useState<string[]>([]);
+  const [countwithdrawforReturn, setcountwithdrawforReturn] = React.useState<CountReturn>({CountReturn:0});
+  const [countwithdrawSelect, setcountwithdrawSelect] = React.useState<number>();
+  const [broke, setBroke] = React.useState<number>();
+
+  const handleChangeID = async (event: React.ChangeEvent<{ value: unknown }>) => {
+    setIDselect(event.target.value as string[]);
+    let nameEquip = await axios.get(`${process.env.REACT_APP_SERVER_URI}returnwithdraw/allName/${event.target.value}`) 
+    setnameEquipforReturn(nameEquip.data)
+  }
+  const handleChangeEquipforReturn = async (event: React.ChangeEvent<{ value: unknown }>) => {
+    setnameEquipSelect(event.target.value as string[]);
+    let CountWithdraw = await axios.post(`${process.env.REACT_APP_SERVER_URI}returnwithdraw/Count`,{IDEmp : `${iduseSelect}`,NameEquip : `${event.target.value}` }) 
+    setcountwithdrawforReturn({CountReturn : CountWithdraw.data.Count_withdraw})
+  }
+  const handleChangeCountwithdrawforReturn = async (event: React.ChangeEvent<{ value: unknown }>) => {
+    setcountwithdrawSelect(parseInt(event.target.value as string ,10));
+    setBroke(countwithdrawforReturn.CountReturn- parseInt(event.target.value as string ,10))
   }
 
-  const [returnq, setReturnq] = React.useState('');
-
-  const handleChangeReturn = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setReturnq(event.target.value as string);
-  };
-
-  var re = parseInt(returnq);
-
-  const [broke, setBroke] = React.useState<number>((max-re));
   const handleChangeBroke = (event: React.ChangeEvent<{value:unknown}>) => {
     setBroke(event.target.value as number);
   };
@@ -270,49 +283,86 @@ const Home: React.FC = () => {
             </TabPanel>
             <TabPanel value={valuetab} index="two">
               <form>
-                <TextField id="standard-basic" label="ID" className={classes.formControl} onChange={handleChangeID} />
+                {/* <TextField id="standard-basic" label="ID" className={classes.formControl} onChange={handleChangeID} /> */}
+                <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor="demo-dialog-native">
+                    ID
+                  </InputLabel>
+                  <Select
+                    native
+                    value={iduseSelect}
+                    onChange={handleChangeID}
+                    input={<Input id="demo-dialog-native" />}
+                  >
+                   <option aria-label="None" value="" />
+                   {[...new Array(idemp.length)].map((_, i) => {
+                                    return (
+                                        <option
+                                            value={idemp[i].IDEmp}>
+                                            {idemp[i].IDEmp}
+                                        </option>
+                                    );
+                                })}
+                  </Select>
+                </FormControl>
                 <FormControl className={classes.formControl}>
                   <InputLabel htmlFor="demo-dialog-native">
                     Equipment
                   </InputLabel>
                   <Select
                     native
-                    value={equipName}
-                    onChange={handleChangeEquip}
+                    value={nameEquipSelect}
+                    onChange={handleChangeEquipforReturn}
                     input={<Input id="demo-dialog-native" />}
                   >
                     <option aria-label="None" value="" />
-                    <option value={'valve'}>Valve</option>
-                    <option value={'Flow rate meter'}>Flow rate meter</option>
-                    <option value={'Pressure meter'}>Pressure meter</option>
+                    {[...new Array(nameEquipforReturn.length)].map((_, i) => {
+                                    return (
+                                        <option
+                                            value={nameEquipforReturn[i].NameEquip}>
+                                            {nameEquipforReturn[i].NameEquip}
+                                        </option>
+                                    );
+                                })}
                   </Select>
                 </FormControl>
-                {/* <TextField id="standard-basic" label="Quantity" className={classes.formControl} onChange={handleChangeQuantity} type="number" /> */}
                 <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="demo-dialog-native">Quantity</InputLabel>
+                  <InputLabel htmlFor="demo-dialog-native">
+                    Quantity
+                  </InputLabel>
                   <Select
                     native
-                    value={returnq}
-                    onChange={handleChangeReturn}
+                    value={countwithdrawSelect}
+                    onChange={handleChangeCountwithdrawforReturn}
                     input={<Input id="demo-dialog-native" />}
                   >
-                    {[...new Array(9)].map((_, i) => {
-                      // console.log(i)
-                      return (
-                        <option
-                          value={++i}
-                        >
-                          {i}
-                        </option>
-                      );
-                    })}
+                     <option aria-label="None" value="" />
+                    {[...new Array(countwithdrawforReturn.CountReturn)].map((_, i) => {
+                                      return (
+                                        <option
+                                          value={++i}>
+                                          {i}
+                                        </option>
+                                      );
+                                })}
                   </Select>
                 </FormControl>
-                <FormControl disabled className={classes.formControl}>
-                  <InputLabel htmlFor="component-disabled">Broke Item</InputLabel>
-                  <Input id="component-disabled" value={broke} onChange={handleChangeBroke} />
-                  {/* <FormHelperText>Disabled</FormHelperText> */}
+                <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor="demo-dialog-native">
+                    Broke Item
+                  </InputLabel>
+                  <Select
+                    native
+                    value={broke}
+                    input={<Input id="demo-dialog-native" />}
+                  >
+                     <option value={broke}>{broke}</option>
+                  </Select>
                 </FormControl>
+                {/* <FormControl disabled className={classes.formControl}> */}
+                  {/* <InputLabel htmlFor="component-disabled">Broke Item</InputLabel>
+                  <Input id="component-disabled" value={broke}/> */}
+                {/* </FormControl>  */}
               </form>
               <Button onClick={handleId} color="primary">
                 Add
