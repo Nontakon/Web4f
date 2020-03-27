@@ -138,21 +138,58 @@ const Home: React.FC = () => {
   };
   var now = dayjs().format('YYYY-MM-DD HH:mm:ss')
   const handleAdd = async() => {
-    let dataInventory = await axios.post(`${process.env.REACT_APP_SERVER_URI}updateinventory/selectcount`,{ NameEquip: `${equipName}`,KKS1 : `${userinfo.KKS1_factory}`})
-    await axios.post(`${process.env.REACT_APP_SERVER_URI}updateinventory/`,{CountStock :`${dataInventory.data[0].CountStock + count.CountADD}`,KKS1 : `${userinfo.KKS1_factory}`,KKS4 : `${dataInventory.data[0].KKS4}`})
+    let CountNow = await axios.post(`${process.env.REACT_APP_SERVER_URI}updateinventory/selectcount`,{ NameEquip: `${equipName}`,KKS1 : `${userinfo.KKS1_factory}`})
+    await axios.post(`${process.env.REACT_APP_SERVER_URI}updateinventory/`,{CountStock :`${CountNow.data[0].CountStock + count.CountADD}`,KKS1 : `${userinfo.KKS1_factory}`,KKS4 : `${CountNow.data[0].KKS4}`})
     await axios.post(`${process.env.REACT_APP_SERVER_URI}insertlog/`,{
       token: `${token}`,
       Process: 'AddEquipment',
       KKS1 : `${userinfo.KKS1_factory}`,
-      KKS4 : `${dataInventory.data[0].KKS4}`,
+      KKS4 : `${CountNow.data[0].KKS4}`,
       Countlog: `${count.CountADD}`,
       Datelog : `${now}`
     })
     setOpenadd(false);
   }
 
-  const handleId = () => {
-    console.log(now)
+  const handleId = async() => {
+    let CountNow = await axios.post(`${process.env.REACT_APP_SERVER_URI}updateinventory/selectcount`,{ 
+      NameEquip: `${nameEquipSelect}`,
+      KKS1 : `${userinfo.KKS1_factory}`
+    })
+    await axios.post(`${process.env.REACT_APP_SERVER_URI}updateinventory/`,{
+      CountStock :CountNow.data[0].CountStock + countwithdrawSelect,
+      KKS1 : `${userinfo.KKS1_factory}`,
+      KKS4 : `${CountNow.data[0].KKS4}`,
+      IDEmp: `${iduseSelect}`
+    })
+    await axios.post(`${process.env.REACT_APP_SERVER_URI}insertwithdraw/web`,{
+      Countwithdraw :broke,
+      KKS1 : `${userinfo.KKS1_factory}`,
+      KKS4 : `${CountNow.data[0].KKS4}`,
+      IDEmp: `${iduseSelect}`
+    })
+    await axios.post(`${process.env.REACT_APP_SERVER_URI}insertbrokeequip/`,{
+      CountBroke :broke,
+      KKS1 : `${userinfo.KKS1_factory}`,
+      KKS4 : `${CountNow.data[0].KKS4}`
+    })
+    await axios.post(`${process.env.REACT_APP_SERVER_URI}insertlog/return`,{
+      IDEmp: `${iduseSelect}`,
+      Process: 'ReturnEquipment',
+      KKS1 : `${userinfo.KKS1_factory}`,
+      KKS4 : `${CountNow.data[0].KKS4}`,
+      Countlog: countwithdrawSelect,
+      Datelog : `${now}`
+    })
+    await axios.post(`${process.env.REACT_APP_SERVER_URI}insertlog/return`,{
+      IDEmp: `${iduseSelect}`,
+      Process: 'EquipmentBroke',
+      KKS1 : `${userinfo.KKS1_factory}`,
+      KKS4 : `${CountNow.data[0].KKS4}`,
+      Countlog: broke,
+      Datelog : `${now}`
+    })
+    setOpenadd(false);
     console.log(iduseSelect)
     console.log(nameEquipSelect)
     console.log(countwithdrawSelect)
@@ -197,12 +234,6 @@ const Home: React.FC = () => {
     setcountwithdrawSelect(parseInt(event.target.value as string ,10));
     setBroke(countwithdrawforReturn.CountReturn- parseInt(event.target.value as string ,10))
   }
-
-  const handleChangeBroke = (event: React.ChangeEvent<{value:unknown}>) => {
-    setBroke(event.target.value as number);
-  };
-  
-
 
   return (
     <div>
