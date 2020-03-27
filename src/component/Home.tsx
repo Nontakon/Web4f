@@ -21,6 +21,7 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import DialogExport from "./Home/components/DialogExport";
+import { MenuItem } from "@material-ui/core";
 // import { Grid } from '@material-ui/core';
 
 interface TabPanelProps {
@@ -150,6 +151,7 @@ const Home: React.FC = () => {
     console.log(idemp)
     console.log(equipName)
     console.log(count)
+    console.log(returnq)
   }
 
   const [valuetab, setValuetab] = React.useState("one"); //problem
@@ -167,11 +169,27 @@ const Home: React.FC = () => {
   const handleChangeQuantity = (event: React.ChangeEvent<{ value: unknown }>) =>{
     setCount({CountADD : parseInt(event.target.value as string ,10)});
   }
+  const max = 10;
   const IdEmp = 0;
   const [idemp, setID] = React.useState<number>(IdEmp);
   const handleChangeID = (event: React.ChangeEvent<{ value: unknown }>) => {
     setID(event.target.value as number);
   }
+
+  const [returnq, setReturnq] = React.useState('');
+
+  const handleChangeReturn = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setReturnq(event.target.value as string);
+  };
+
+  var re = parseInt(returnq);
+
+  const [broke, setBroke] = React.useState<number>((max-re));
+  const handleChangeBroke = (event: React.ChangeEvent<{value:unknown}>) => {
+    setBroke(event.target.value as number);
+  };
+  
+
 
   return (
     <div>
@@ -241,7 +259,7 @@ const Home: React.FC = () => {
                     <option value={'Presure meter'}>Presure meter</option>
                   </Select>
                 </FormControl>
-                <TextField id="standard-basic" label="Quantity" className={classes.formControl} onChange={handleChangeQuantity} />
+                <TextField id="standard-basic" label="Quantity" className={classes.formControl} onChange={handleChangeQuantity} type="number" />
               </form>
               <Button onClick={handleAdd} color="primary">
                 Add
@@ -269,10 +287,38 @@ const Home: React.FC = () => {
                     <option value={'Pressure meter'}>Pressure meter</option>
                   </Select>
                 </FormControl>
-                <TextField id="standard-basic" label="Quantity" className={classes.formControl} onChange={handleChangeQuantity} />
+                {/* <TextField id="standard-basic" label="Quantity" className={classes.formControl} onChange={handleChangeQuantity} type="number" /> */}
+                <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor="demo-dialog-native">Quantity</InputLabel>
+                  <Select
+                    native
+                    value={returnq}
+                    onChange={handleChangeReturn}
+                    input={<Input id="demo-dialog-native" />}
+                  >
+                    {[...new Array(9)].map((_, i) => {
+                      // console.log(i)
+                      return (
+                        <option
+                          value={++i}
+                        >
+                          {i}
+                        </option>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+                <FormControl disabled className={classes.formControl}>
+                  <InputLabel htmlFor="component-disabled">Broke Item</InputLabel>
+                  <Input id="component-disabled" value={broke} onChange={handleChangeBroke} />
+                  {/* <FormHelperText>Disabled</FormHelperText> */}
+                </FormControl>
               </form>
               <Button onClick={handleId} color="primary">
                 Add
+              </Button>
+              <Button onClick={handleCloseAdd} color="primary">
+                Cancel
               </Button>
             </TabPanel>
           </div>
