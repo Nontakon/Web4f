@@ -22,6 +22,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import DialogExport from "./Home/components/DialogExport";
 import { MenuItem } from "@material-ui/core";
+import { Url } from "url";
 // import { Grid } from '@material-ui/core';
 
 interface TabPanelProps {
@@ -61,7 +62,7 @@ interface PartInfo {
   DateExpired: Date | string;
   Life_time: number;
   CountStock: number;
-  QRCode: string;
+  QRCode: Url;
 }
 
 interface TableState {
