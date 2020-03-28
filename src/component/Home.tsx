@@ -61,6 +61,7 @@ interface PartInfo {
   DateExpired: Date | string;
   Life_time: number;
   CountStock: number;
+  QRCode: string;
 }
 
 interface TableState {
@@ -117,7 +118,8 @@ const Home: React.FC = () => {
       { title: "DateStart", field: "DateStart" },
       { title: "DateExpired", field: "DateExpired" },
       { title: "Life time", field: "Life_time" },
-      { title: "Stock", field: "CountStock" }
+      { title: "Stock", field: "CountStock" },
+      { title: "QRCode", field: "QRCode" }
     ],
     data: []
   });
@@ -138,8 +140,15 @@ const Home: React.FC = () => {
   };
   var now = dayjs().format('YYYY-MM-DD HH:mm:ss')
   const handleAdd = async() => {
-    let CountNow = await axios.post(`${process.env.REACT_APP_SERVER_URI}updateinventory/selectcount`,{ NameEquip: `${equipName}`,KKS1 : `${userinfo.KKS1_factory}`})
-    await axios.post(`${process.env.REACT_APP_SERVER_URI}updateinventory/`,{CountStock :`${CountNow.data[0].CountStock + count.CountADD}`,KKS1 : `${userinfo.KKS1_factory}`,KKS4 : `${CountNow.data[0].KKS4}`})
+    let CountNow = await axios.post(`${process.env.REACT_APP_SERVER_URI}updateinventory/selectcount`,{
+      NameEquip: `${equipName}`,
+      KKS1 : `${userinfo.KKS1_factory}`
+    })
+    await axios.post(`${process.env.REACT_APP_SERVER_URI}updateinventory/`,{
+      CountStock :`${CountNow.data[0].CountStock + count.CountADD}`,
+      KKS1 : `${userinfo.KKS1_factory}`,
+      KKS4 : `${CountNow.data[0].KKS4}`
+    })
     await axios.post(`${process.env.REACT_APP_SERVER_URI}insertlog/`,{
       token: `${token}`,
       Process: 'AddEquipment',
