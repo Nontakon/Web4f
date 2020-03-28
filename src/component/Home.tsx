@@ -218,7 +218,7 @@ const Home: React.FC = () => {
   const [nameEquipSelect, setnameEquipSelect] = React.useState<string[]>([]);
   const [countwithdrawforReturn, setcountwithdrawforReturn] = React.useState<CountReturn>({CountReturn:0});
   const [countwithdrawSelect, setcountwithdrawSelect] = React.useState<number>();
-  const [broke, setBroke] = React.useState<number>();
+  const [broke, setBroke] = React.useState<number>(0);
 
   const handleChangeID = async (event: React.ChangeEvent<{ value: unknown }>) => {
     setIDselect(event.target.value as string[]);
@@ -378,7 +378,7 @@ const Home: React.FC = () => {
                                 })}
                   </Select>
                 </FormControl>
-                <FormControl className={classes.formControl}>
+                {/* <FormControl className={classes.formControl}>
                   <InputLabel htmlFor="demo-dialog-native">
                     Broke Item
                   </InputLabel>
@@ -389,11 +389,11 @@ const Home: React.FC = () => {
                   >
                      <option value={broke}>{broke}</option>
                   </Select>
-                </FormControl>
-                {/* <FormControl disabled className={classes.formControl}> */}
-                  {/* <InputLabel htmlFor="component-disabled">Broke Item</InputLabel>
-                  <Input id="component-disabled" value={broke}/> */}
-                {/* </FormControl>  */}
+                </FormControl> */}
+                <FormControl disabled className={classes.formControl}>
+                  <InputLabel htmlFor="component-disabled">Broke Item</InputLabel>
+                  <Input id="component-disabled" value={broke}/>
+                </FormControl> 
               </form>
               <Button onClick={handleId} color="primary">
                 Add
