@@ -100,7 +100,7 @@ const Home: React.FC = () => {
       );
       // console.log(infodata.data)
       setState(prev => ({ ...prev, data: infodata.data }));
-      let IDEmp = await axios.get(`${process.env.REACT_APP_SERVER_URI}returnwithdraw/allID`)
+      let IDEmp = await axios.get(`${process.env.REACT_APP_SERVER_URI}returnwithdraw/allID/${infouser.data[0].KKS1_factory}`)
       setID(IDEmp.data)
     } else {
       push("/LoginFrom");
@@ -367,7 +367,8 @@ const Home: React.FC = () => {
                     onChange={handleChangeCountwithdrawforReturn}
                     input={<Input id="demo-dialog-native" />}
                   >
-                     <option aria-label="None" value="" />
+                    <option aria-label="None" value="" />
+                     <option value={0}>0</option>
                     {[...new Array(countwithdrawforReturn.CountReturn)].map((_, i) => {
                                       return (
                                         <option
