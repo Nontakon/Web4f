@@ -274,7 +274,7 @@ const Home: React.FC = () => {
 
         <DialogExport />
         <Button variant="outlined" color="primary" onClick={handleClickOpenAdd}>
-          Add
+          Stock Manage
         </Button>
         <Dialog
           fullWidth={true}
