@@ -38,8 +38,8 @@ interface TableWithdraw {
     plantNumber : string;
 } 
 
-export const DialogExport: React.FC<Props> = ({plantNumber=0}) => {
-    console.log(plantNumber);
+export const DialogExport: React.FC<Props> = ({plantNumber=""}) => {
+    // console.log(plantNumber);
     const [open, setOpen] = React.useState(false);
     const [withdrawLog, setWithdrawLog] = React.useState<TableWithdraw>({
         columns: [
@@ -69,17 +69,19 @@ export const DialogExport: React.FC<Props> = ({plantNumber=0}) => {
     useEffect(() => {
         const fetching = async () => {
             try {
-                let infowithdraw = await axios.get(
-                    `${process.env.REACT_APP_SERVER_URI}selectlog/${year}-${month}`
-                );
-                console.log(infowithdraw.data);
-                setWithdrawLog(prev => ({ ...prev, data: infowithdraw.data }));
-            } catch (e) {
+                if(plantNumber !== ""){
+                    let infowithdraw = await axios.post(
+                        `${process.env.REACT_APP_SERVER_URI}selectlog/`,{Month : `${month}`,Year : `${year}`,KKS1 : `${plantNumber}` }
+                    );
+                    console.log(infowithdraw.data);
+                    setWithdrawLog(prev => ({ ...prev, data: infowithdraw.data }));
+                }
+            }catch (e) {
                 console.log(e);
             }
         };
         fetching();
-    }, [year, month]);
+    }, [year, month,plantNumber]);
     const handleClickOpen = () => {
         setOpen(true);
     };
