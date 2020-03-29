@@ -260,6 +260,9 @@ const Home: React.FC = () => {
         <Infoview>
           {userinfo.NameEmp} &nbsp;{userinfo.LastNameEmp} &nbsp; factory :{" "}
           {remove_last_character(userinfo.KKS1_factory)}{" "}
+          <AddBut variant="outlined" color="primary" onClick={handleClickOpenAdd}>
+            Manage Item
+        </AddBut>
         </Infoview>
         <MaterialTable
           title="EquipmentData"
@@ -269,15 +272,13 @@ const Home: React.FC = () => {
             ...rest,
             DateStart: dayjs(DateStart).format("DD/MM/YYYY"),
             DateExpired: dayjs(DateExpired).format("DD/MM/YYYY"),
-            QRCode : <img src = {QRCode}/>,
+            QRCode : <img style={{width:75}} src = {QRCode}/>,
             // QRCode : <a href = {QRCode} target = "_blank">{QRCode}</a>,
           }))}
         />
 
         <DialogExport />
-        <Button variant="outlined" color="primary" onClick={handleClickOpenAdd}>
-          Add
-        </Button>
+        
         <Dialog
           fullWidth={true}
           maxWidth={"lg"}
@@ -454,6 +455,15 @@ const Viewtable = styled.div`
   /* border: 2px solid black; */
   background-color: whitesmoke;
   border-radius: 3px;
+`;
+const AddBut = styled(Button)`
+  &&&{
+    position: absolute;
+    right: 30px;
+    margin-top: 3px;
+    font-size: 16px;
+    z-index: 99;
+  }
 `;
 
 const Logoutbut = styled(Button)`
