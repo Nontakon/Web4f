@@ -22,7 +22,6 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import DialogExport from "./Home/components/DialogExport";
 import { MenuItem } from "@material-ui/core";
-import { Url } from "url";
 // import { Grid } from '@material-ui/core';
 
 interface TabPanelProps {
@@ -62,7 +61,7 @@ interface PartInfo {
   DateExpired: Date | string;
   Life_time: number;
   CountStock: number;
-  QRCode: Url;
+  QRCode: string|any;
 }
 
 interface TableState {
@@ -266,16 +265,18 @@ const Home: React.FC = () => {
           title="EquipmentData"
           style={{ borderRadius: "15" }}
           columns={state.columns}
-          data={state.data.map(({ DateStart, DateExpired, ...rest }) => ({
+          data={state.data.map(({ DateStart, DateExpired,QRCode,...rest }) => ({
             ...rest,
             DateStart: dayjs(DateStart).format("DD/MM/YYYY"),
-            DateExpired: dayjs(DateExpired).format("DD/MM/YYYY")
+            DateExpired: dayjs(DateExpired).format("DD/MM/YYYY"),
+            QRCode : <img src = {QRCode}/>,
+            // QRCode : <a href = {QRCode} target = "_blank">{QRCode}</a>,
           }))}
         />
 
         <DialogExport />
         <Button variant="outlined" color="primary" onClick={handleClickOpenAdd}>
-          Stock Manage
+          Add
         </Button>
         <Dialog
           fullWidth={true}
