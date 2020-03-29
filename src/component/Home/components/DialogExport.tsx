@@ -34,7 +34,12 @@ interface TableWithdraw {
     data: WithdrawInfo[];
 }
 
-export const DialogExport: React.FC = () => {
+ interface Props{
+    plantNumber : string;
+} 
+
+export const DialogExport: React.FC<Props> = ({plantNumber=0}) => {
+    console.log(plantNumber);
     const [open, setOpen] = React.useState(false);
     const [withdrawLog, setWithdrawLog] = React.useState<TableWithdraw>({
         columns: [
@@ -109,9 +114,11 @@ export const DialogExport: React.FC = () => {
     };
     return (
         <>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+            <ButDiv>
+            <ExportBut variant="outlined" color="primary" onClick={handleClickOpen}>
                 Export
-            </Button>
+            </ExportBut>
+            </ButDiv>
             <Dialog
                 fullWidth
                 maxWidth={"lg"}
@@ -134,7 +141,7 @@ export const DialogExport: React.FC = () => {
                                 {[...new Array(12)].map((_, i) => {
                                     // console.log(i)
                                     return (
-                                        <option
+                                        <option key={i}
                                             value={dayjs()
                                                 .add(0 - i, "month")
                                                 .format("M")}
@@ -158,7 +165,7 @@ export const DialogExport: React.FC = () => {
                                 {[...new Array(4)].map((_, i) => {
                                     // console.log(i)
                                     return (
-                                        <option
+                                        <option key={i}
                                             value={dayjs()
                                                 .add(0 - i, "year")
                                                 .format("YYYY")}
@@ -196,3 +203,16 @@ export const DialogExport: React.FC = () => {
 };
 
 export default DialogExport;
+
+const ExportBut = styled(Button)`
+  &&&{
+    margin-top: 10px;
+    font-size: 16px;
+    z-index: 99;
+  }
+`;
+
+const ButDiv = styled.div`
+    display: flex;
+    justify-content: flex-end;
+`;

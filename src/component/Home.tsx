@@ -21,7 +21,7 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import DialogExport from "./Home/components/DialogExport";
-import { MenuItem } from "@material-ui/core";
+// import QRCode from 'qrcode.react' error
 // import { Grid } from '@material-ui/core';
 
 interface TabPanelProps {
@@ -61,7 +61,7 @@ interface PartInfo {
   DateExpired: Date | string;
   Life_time: number;
   CountStock: number;
-  QRCode: string|any;
+  QRCode?: string | any;
 }
 
 interface TableState {
@@ -244,6 +244,7 @@ const Home: React.FC = () => {
     setBroke(countwithdrawforReturn.CountReturn- parseInt(event.target.value as string ,10))
   }
 
+
   return (
     <div>
       <Headnav>
@@ -268,16 +269,21 @@ const Home: React.FC = () => {
           title="EquipmentData"
           style={{ borderRadius: "15" }}
           columns={state.columns}
-          data={state.data.map(({ DateStart, DateExpired,QRCode,...rest }) => ({
-            ...rest,
-            DateStart: dayjs(DateStart).format("DD/MM/YYYY"),
-            DateExpired: dayjs(DateExpired).format("DD/MM/YYYY"),
-            QRCode : <img style={{width:75}} src = {QRCode}/>,
-            // QRCode : <a href = {QRCode} target = "_blank">{QRCode}</a>,
-          }))}
+          data={state.data.map(({ DateStart, DateExpired,QRCode=false,...rest }) => {
+            console.log({QRCode})
+            return {
+              ...rest,
+              DateStart: dayjs(DateStart).format("DD/MM/YYYY"),
+              DateExpired: dayjs(DateExpired).format("DD/MM/YYYY"),
+              QRCode : QRCode&&<img style={{width:75}} src = {QRCode}/>
+              // QRCode : <a href = {QRCode} target = "_blank">{QRCode}</a>,
+            }
+            
+          })
+        }
         />
 
-        <DialogExport />
+        <DialogExport plantNumber={userinfo.KKS1_factory}/>
         
         <Dialog
           fullWidth={true}
@@ -340,7 +346,7 @@ const Home: React.FC = () => {
                    <option aria-label="None" value="" />
                    {[...new Array(idemp.length)].map((_, i) => {
                                     return (
-                                        <option
+                                        <option key={i}
                                             value={idemp[i].IDEmp}>
                                             {idemp[i].IDEmp}
                                         </option>
