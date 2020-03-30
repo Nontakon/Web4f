@@ -105,6 +105,8 @@ const Home: React.FC = () => {
       );
       // console.log(infodata.data)
       setState(prev => ({ ...prev, data: infodata.data }));
+      let allEquipname = await axios.get(`${process.env.REACT_APP_SERVER_URI}equip_table/allEquipName/${infouser.data[0].KKS1_factory}`)
+      setallEquipname(allEquipname.data)
       let IDEmp = await axios.get(
         `${process.env.REACT_APP_SERVER_URI}returnwithdraw/allID/${infouser.data[0].KKS1_factory}`
       );
@@ -223,7 +225,7 @@ const Home: React.FC = () => {
     setValuetab(newValue);
   };
   const [count, setCount] = React.useState<CountAdd>({ CountADD: 0 });
-
+  const [allEquipname,setallEquipname] = React.useState<string[] | any>([]);
   const [equipName, setEquipName] = React.useState<string[]>([]);
 
   const handleChangeEquip = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -317,7 +319,6 @@ const Home: React.FC = () => {
               QRCode: QRCode && (
                 <QRCode value={remove_firstkks(KKS)} size={90} />
               )
-              // QRCode : <a href = {QRCode} target = "_blank">{QRCode}</a>,
             };
           })}
         />
@@ -359,9 +360,13 @@ const Home: React.FC = () => {
                     input={<Input id="demo-dialog-native" />}
                   >
                     <option aria-label="None" value="" />
-                    <option value={"Valve"}>Valve</option>
-                    <option value={"Flow rate meter"}>Flow rate meter</option>
-                    <option value={"Presure meter"}>Presure meter</option>
+                    {[...new Array(allEquipname.length)].map((_, i) => {
+                      return (
+                        <option value={allEquipname[i].NameEquip}>
+                          {allEquipname[i].NameEquip}
+                        </option>
+                      );
+                    })}
                   </Select>
                 </FormControl>
                 <TextField
