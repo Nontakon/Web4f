@@ -88,6 +88,10 @@ const Home: React.FC = () => {
     return element.slice(0, element.length - 1);
   }
 
+  function remove_firstkks(element: String){
+    return element.substr(2,element.length)
+  }
+
   const chacktoken = async () => {
     if (token !== undefined) {
       let infouser = await axios.post(
@@ -310,7 +314,9 @@ const Home: React.FC = () => {
               KKS,
               DateStart: dayjs(DateStart).format("DD/MM/YYYY"),
               DateExpired: dayjs(DateExpired).format("DD/MM/YYYY"),
-              QRCode: QRCode && <QRCode value={KKS} size={90} />
+              QRCode: QRCode && (
+                <QRCode value={remove_firstkks(KKS)} size={90} />
+              )
               // QRCode : <a href = {QRCode} target = "_blank">{QRCode}</a>,
             };
           })}
@@ -326,16 +332,20 @@ const Home: React.FC = () => {
           aria-labelledby="form-dialog-title"
         >
           <div className={classes.root}>
-            <AppBar position="static">
+            <div className={classes.tabBackground}>
+            <AppBar position="static" color="transparent">
               <Tabs
                 value={valuetab}
                 onChange={handleChange}
+                indicatorColor="primary"
+                textColor="primary"
                 aria-label="wrapped label tabs example"
               >
-                <Tab value="one" label="Add" wrapped {...a11yProps("one")} />
-                <Tab value="two" label="Return" wrapped {...a11yProps("two")} />
+                <Tab value="one" label="Insert Inventory" wrapped {...a11yProps("one")} />
+                <Tab value="two" label="Return Inventory" wrapped {...a11yProps("two")} />
               </Tabs>
             </AppBar>
+            </div>
             <TabPanel value={valuetab} index="one">
               <form>
                 <FormControl className={classes.formControl}>
@@ -363,7 +373,7 @@ const Home: React.FC = () => {
                 />
               </form>
               <Button onClick={handleAdd} color="primary">
-                Add
+                Insert
               </Button>
               <Button onClick={handleCloseAdd} color="primary">
                 Cancel
@@ -427,18 +437,6 @@ const Home: React.FC = () => {
                     )}
                   </Select>
                 </FormControl>
-                {/* <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="demo-dialog-native">
-                    Broke Item
-                  </InputLabel>
-                  <Select
-                    native
-                    value={broke}
-                    input={<Input id="demo-dialog-native" />}
-                  >
-                     <option value={broke}>{broke}</option>
-                  </Select>
-                </FormControl> */}
                 <FormControl disabled className={classes.formControl}>
                   <InputLabel htmlFor="component-disabled">
                     Broke Item
@@ -447,7 +445,7 @@ const Home: React.FC = () => {
                 </FormControl>
               </form>
               <Button onClick={handleId} color="primary">
-                Add
+                Return
               </Button>
               <Button onClick={handleCloseAdd} color="primary">
                 Cancel
@@ -476,7 +474,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     root: {
       flexGrow: 1,
-      backgroundColor: theme.palette.background.paper
+      backgroundColor: theme.palette.background.paper,
+    },
+    tabBackground: {
+      backgroundColor: 'orange',
     }
   })
 );
