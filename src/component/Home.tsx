@@ -168,7 +168,13 @@ const Home: React.FC = () => {
       Countlog: `${count.CountADD}`,
       Datelog: `${now}`
     });
+    let infodata = await axios.get(
+      `${process.env.REACT_APP_SERVER_URI}equip_table/${userinfo.KKS1_factory}`
+    );
+    // console.log(infodata.data)
+    setState(prev => ({ ...prev, data: infodata.data }));
     setOpenadd(false);
+    
   };
 
   const handleId = async () => {
@@ -212,6 +218,11 @@ const Home: React.FC = () => {
       Countlog: broke,
       Datelog: `${now}`
     });
+    let infodata = await axios.get(
+      `${process.env.REACT_APP_SERVER_URI}equip_table/${userinfo.KKS1_factory}`
+    );
+    // console.log(infodata.data)
+    setState(prev => ({ ...prev, data: infodata.data }));
     setOpenadd(false);
     console.log(iduseSelect);
     console.log(nameEquipSelect);
