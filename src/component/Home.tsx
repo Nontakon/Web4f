@@ -22,6 +22,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import DialogExport from "./Home/components/DialogExport";
 import QRCode from "qrcode.react";
+import DialogQrcode from "./Home/components/DialogQrcode";
 // import { Grid } from '@material-ui/core';
 
 interface TabPanelProps {
@@ -88,9 +89,7 @@ const Home: React.FC = () => {
     return element.slice(0, element.length - 1);
   }
 
-  function remove_firstkks(element: String){
-    return element.substr(2,element.length)
-  }
+  
 
   const chacktoken = async () => {
     if (token !== undefined) {
@@ -327,8 +326,8 @@ const Home: React.FC = () => {
               KKS,
               DateStart: dayjs(DateStart).format("DD/MM/YYYY"),
               DateExpired: dayjs(DateExpired).format("DD/MM/YYYY"),
-              QRCode: QRCode && (
-                <QRCode value={remove_firstkks(KKS)} size={90} />
+              QRCode: QRCode && ( <DialogQrcode KKS={KKS}/>
+                
               )
             };
           })}
@@ -373,7 +372,7 @@ const Home: React.FC = () => {
                     <option aria-label="None" value="" />
                     {[...new Array(allEquipname.length)].map((_, i) => {
                       return (
-                        <option value={allEquipname[i].NameEquip}>
+                        <option key={i} value={allEquipname[i].NameEquip}>
                           {allEquipname[i].NameEquip}
                         </option>
                       );
