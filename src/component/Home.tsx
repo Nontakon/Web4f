@@ -2,13 +2,13 @@ import React, { useContext, useEffect } from "react";
 import { CounterContext } from "../store/storeprovider";
 import { useHistory } from "react-router";
 import axios from "axios";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import dayjs from "dayjs";
 import MaterialTable, { Column } from "material-table";
 import Button from "@material-ui/core/Button";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Cookies from "js-cookie";
-import Dialog, { DialogProps } from "@material-ui/core/Dialog";
+import Dialog from "@material-ui/core/Dialog";
 import TextField from "@material-ui/core/TextField";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
@@ -23,7 +23,7 @@ import Box from "@material-ui/core/Box";
 import DialogExport from "./Home/components/DialogExport";
 import QRCode from "qrcode.react";
 import DialogQrcode from "./Home/components/DialogQrcode";
-// import { Grid } from '@material-ui/core';
+
 
 interface TabPanelProps {
   children?: React.ReactNode;

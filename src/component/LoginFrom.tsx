@@ -1,12 +1,9 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useHistory } from "react-router";
 import { CounterContext } from "../store/storeprovider";
-import styles from "../css_style/inputStyle.module.css";
-import { AccessAlarm, ThreeDRotation } from "@material-ui/icons";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import { makeStyles } from "@material-ui/core/styles";
 import LockIcon from "@material-ui/icons/Lock";
 import logo from "../css_style/Logo_kmitl.png";
 import styled from "styled-components";

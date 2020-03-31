@@ -1,6 +1,6 @@
 import React from 'react'
 import QRCode from "qrcode.react";
-import { Dialog, DialogTitle, DialogContent } from '@material-ui/core';
+import { Dialog, DialogContent } from '@material-ui/core';
 
 interface Props {
     KKS : string;
@@ -22,8 +22,6 @@ const DialogQrcode: React.FC<Props> = ({KKS}) => {
     return (
         <div>
             <Dialog
-                // fullWidth
-                // maxWidth={"xs"}
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="form-dialog-title"
