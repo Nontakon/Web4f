@@ -15,7 +15,11 @@ import DialogExport from "./Home/components/DialogExport";
 import QRCode from "qrcode.react";
 import DialogQrcode from "./Home/components/DialogQrcode";
 import DialogManage from "./Home/components/DialogManage";
-
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -56,7 +60,13 @@ interface PartInfo {
   CountStock: number;
   QRCode?: string | any;
 }
-
+interface ItemInfo{
+  NameEquip: string;
+  CountStock: number;
+}
+interface TableItem{
+  data: ItemInfo[];
+}
 interface TableState {
   columns: Array<Column<PartInfo>>;
   data: PartInfo[];
@@ -83,21 +93,41 @@ const Home: React.FC = () => {
     return element.slice(0, element.length - 1);
   }
 
-  
+  const [openalert, setOpenalert] = React.useState(false);
+  const [itemwilloutstock, setitemwilloutstock] = React.useState<ItemInfo[]>([])
+    
+  const handlekOpen = () => {
+    setOpenalert(true);
+  };
 
+  const handleClosealert = () => {
+    setOpenalert(false);
+  };  
+  const checkitem = async () => {
+    let itemdata = await axios.get(
+      `${process.env.REACT_APP_SERVER_URI}itemcheck/${token}`
+    );
+    console.log(itemdata.data);
+    itemdata.data.map((itemInfo:ItemInfo) => {
+      if (itemInfo.CountStock <= 5) {
+        setOpenalert(true);
+        setitemwilloutstock(prev => ([...prev,itemInfo]));
+      }
+    });
+  }
   const chacktoken = async () => {
     if (token !== undefined) {
       let infouser = await axios.post(
         `${process.env.REACT_APP_SERVER_URI}equip_table/user`,
         { token: `${token}` }
       );
-      // console.log(infouser.data)
       setuserinfo(infouser.data[0]);
       let infodata = await axios.get(
         `${process.env.REACT_APP_SERVER_URI}equip_table/${infouser.data[0].KKS1_factory}`
       );
       // console.log(infodata.data)
       setState(prev => ({ ...prev, data: infodata.data }));
+      checkitem()
     } else {
       push("/LoginFrom");
     }
@@ -110,8 +140,8 @@ const Home: React.FC = () => {
     columns: [
       { title: "Equipment", field: "NameEquip" },
       { title: "KKSCode", field: "KKS" },
-      { title: "DateStart", field: "DateStart" },
-      { title: "DateExpired", field: "DateExpired" },
+      { title: "Date Start", field: "DateStart" },
+      { title: "Date Expired", field: "DateExpired" },
       { title: "Life time", field: "Life_time" },
       { title: "Stock", field: "CountStock" },
       { title: "QRCode", field: "QRCode" }
@@ -161,9 +191,33 @@ const Home: React.FC = () => {
           })}
         />
 
+        
+          <Dialog
+            open={openalert}
+            onClose={handleClosealert}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogContent>
+            <DialogContentText id="alert-dialog-description" style={{ color : "#f00"}}>
+              <h1>Warning!! Item low </h1>
+              {itemwilloutstock.map(({ NameEquip,CountStock}: ItemInfo) => {
+                return (
+                  <p>{`${NameEquip} : ${CountStock}`}</p>
+                );
+              })}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClosealert} color="primary" autoFocus>
+                Agree
+              </Button>
+            </DialogActions>
+          </Dialog>
+        
+
         <DialogExport plantNumber={userinfo.KKS1_factory} />
 
-        <DialogManage plantNumber={userinfo.KKS1_factory} updateData={(arg) => { setState(prev => ({ ...prev, data: arg }))}} />
       </Viewtable>
     </div>
   );
@@ -195,13 +249,14 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Headnav = styled.div`
   background-color: orange;
-  height: 130px;
+  height: 100px;
   width: 100%;
-  position: fixed;
+  position: sticky;
   z-index: 1000;
+  top: 0;
 `;
 const Viewtable = styled.div`
-  padding: 140px 30px 20px 30px;
+  padding: 30px; 
   /* border: 2px solid black; */
   background-color: whitesmoke;
   border-radius: 3px;
@@ -220,23 +275,25 @@ const Logoutbut = styled(Button)`
   &&& {
     position: absolute;
     right: 30px;
-    margin-top: 2%;
+    margin: auto 0;
     color: whitesmoke;
     border-width: 5px;
     font-size: 22px;
+    top: 0;
+    bottom: 0;
   }
 `;
 const Infoview = styled.div`
   flex-direction: row;
   font-family: calibri;
   font-size: 30px;
-  padding: 10px 0 20px 0;
+  padding: 5px 0 20px 0;
 `;
 const Label = styled.div`
   display: flex;
-  margin: 10px 0 0 30px;
+  margin: 20px 0 0 30px;
   position: absolute;
   color: white;
-  font-size: 80px;
+  font-size: 64px;
   font-family: calibri;
 `;

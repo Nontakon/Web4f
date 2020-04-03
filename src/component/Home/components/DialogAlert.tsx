@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 const DialogAlert = () => {
 
-    const [openalert, setOpenalert] = React.useState(false);
+    const [openalert, setOpenalert] = React.useState(true);
 
     const handlekOpen = () => {
         setOpenalert(true);
@@ -20,7 +20,6 @@ const DialogAlert = () => {
     return (
         <div>
             <div>
-
                 <Dialog
                     open={openalert}
                     onClose={handleClosealert}
