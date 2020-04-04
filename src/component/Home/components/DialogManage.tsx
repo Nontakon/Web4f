@@ -80,7 +80,7 @@ const DialogManage: React.FC<Props> = ({ plantNumber = "",updateData }) => {
                     );
                     setallEquipname(allEquipname.data);
                     let IDEmp = await axios.get(
-                        `${process.env.REACT_APP_SERVER_URI}returnwithdraw/allID/${plantNumber}`
+                      `${process.env.REACT_APP_SERVER_URI}setreturnwithdraw/allID/${plantNumber}`
                     );
                     setID(IDEmp.data);
                 }
@@ -96,90 +96,43 @@ const DialogManage: React.FC<Props> = ({ plantNumber = "",updateData }) => {
     const classes = useStyles();
     const [openadd, setOpenadd] = React.useState(false);
     const handleAdd = async (props : any) => {
-      let CountNow = await axios.post(
-        `${process.env.REACT_APP_SERVER_URI}updateinventory/selectcount`,
-        {
-          NameEquip: `${equipName}`,
-          KKS1: `${plantNumber}`
-        }
-      );
-      await axios.post(`${process.env.REACT_APP_SERVER_URI}updateinventory/`, {
-        CountStock: `${CountNow.data[0].CountStock + count.CountADD}`,
+      await axios.post(`${process.env.REACT_APP_SERVER_URI}addinventory/`,{
+        NameEquip: `${equipName}`,
         KKS1: `${plantNumber}`,
-        KKS4: `${CountNow.data[0].KKS4}`
-      });
-      await axios.post(`${process.env.REACT_APP_SERVER_URI}insertlog/`, {
+        CountADD: count.CountADD,
         token: `${token}`,
         Process: "AddEquipment",
-        KKS1: `${plantNumber}`,
-        KKS4: `${CountNow.data[0].KKS4}`,
-        Countlog: `${count.CountADD}`,
         Datelog: `${now}`
-      });
+      })
       let infodata = await axios.get(
         `${process.env.REACT_APP_SERVER_URI}equip_table/${plantNumber}`
       );
       updateData(infodata.data);
-      // console.log(infodata.data)
-      // setState(prev => ({ ...prev, data: infodata.data }));
       setOpenadd(false);
+      setEquipName([])
+      setCount({ CountADD: parseInt('', 10) });
     };
 
-    const handleId = async (props: any) => {
-      let CountNow = await axios.post(
-        `${process.env.REACT_APP_SERVER_URI}updateinventory/selectcount`,
-        {
-          NameEquip: `${nameEquipSelect}`,
-          KKS1: `${plantNumber}`
-        }
-      );
-      await axios.post(`${process.env.REACT_APP_SERVER_URI}updateinventory/`, {
-        CountStock: CountNow.data[0].CountStock + countwithdrawSelect,
+    const handleReturn = async (props: any) => {
+      await axios.post(`${process.env.REACT_APP_SERVER_URI}returnwithdraw/`, {
+        NameEquip: `${nameEquipSelect}`,
         KKS1: `${plantNumber}`,
-        KKS4: `${CountNow.data[0].KKS4}`,
-        IDEmp: `${iduseSelect}`
-      });
-      await axios.post(
-        `${process.env.REACT_APP_SERVER_URI}insertwithdraw/web`,
-        {
-          Countwithdraw: broke,
-          KKS1: `${plantNumber}`,
-          KKS4: `${CountNow.data[0].KKS4}`,
-          IDEmp: `${iduseSelect}`
-        }
-      );
-      await axios.post(`${process.env.REACT_APP_SERVER_URI}insertbrokeequip/`, {
+        CountADD: countwithdrawSelect,
         CountBroke: broke,
-        KKS1: `${plantNumber}`,
-        KKS4: `${CountNow.data[0].KKS4}`
-      });
-      await axios.post(`${process.env.REACT_APP_SERVER_URI}insertlog/return`, {
         IDEmp: `${iduseSelect}`,
-        Process: "ReturnEquipment",
-        KKS1: `${plantNumber}`,
-        KKS4: `${CountNow.data[0].KKS4}`,
-        Countlog: countwithdrawSelect,
+        ProcessReturn : "ReturnEquipment",
+        ProcessBroke: "EquipmentBroke",
         Datelog: `${now}`
-      });
-      await axios.post(`${process.env.REACT_APP_SERVER_URI}insertlog/return`, {
-        IDEmp: `${iduseSelect}`,
-        Process: "EquipmentBroke",
-        KKS1: `${plantNumber}`,
-        KKS4: `${CountNow.data[0].KKS4}`,
-        Countlog: broke,
-        Datelog: `${now}`
-      });
+      })
       let infodata = await axios.get(
         `${process.env.REACT_APP_SERVER_URI}equip_table/${plantNumber}`
       );
-      // console.log(infodata.data)
-        updateData(infodata.data);
-      // setState(prev => ({ ...prev, data: infodata.data }));
+      updateData(infodata.data);
+      setIDselect([])
+      setnameEquipSelect([])
+      setcountwithdrawSelect(parseInt('', 10))
+      setBroke(0)
       setOpenadd(false);
-      console.log(iduseSelect);
-      console.log(nameEquipSelect);
-      console.log(countwithdrawSelect);
-      console.log(broke);
     };
 
     const [valuetab, setValuetab] = React.useState("one"); //problem
@@ -206,12 +159,8 @@ const DialogManage: React.FC<Props> = ({ plantNumber = "",updateData }) => {
         string[] | any
     >([]);
     const [nameEquipSelect, setnameEquipSelect] = React.useState<string[]>([]);
-    const [countwithdrawforReturn, setcountwithdrawforReturn] = React.useState<
-        CountReturn
-    >({ CountReturn: 0 });
-    const [countwithdrawSelect, setcountwithdrawSelect] = React.useState<
-        number
-    >();
+    const [countwithdrawforReturn, setcountwithdrawforReturn] = React.useState<CountReturn>({ CountReturn: 0 });
+    const [countwithdrawSelect, setcountwithdrawSelect] = React.useState<number>();
     const [broke, setBroke] = React.useState<number>(0);
 
     const handleChangeID = async (
@@ -219,7 +168,7 @@ const DialogManage: React.FC<Props> = ({ plantNumber = "",updateData }) => {
     ) => {
         setIDselect(event.target.value as string[]);
         let nameEquip = await axios.get(
-            `${process.env.REACT_APP_SERVER_URI}returnwithdraw/allName/${event.target.value}`
+          `${process.env.REACT_APP_SERVER_URI}setreturnwithdraw/allName/${event.target.value}`
         );
         setnameEquipforReturn(nameEquip.data);
     };
@@ -228,7 +177,7 @@ const DialogManage: React.FC<Props> = ({ plantNumber = "",updateData }) => {
     ) => {
         setnameEquipSelect(event.target.value as string[]);
         let CountWithdraw = await axios.post(
-            `${process.env.REACT_APP_SERVER_URI}returnwithdraw/Count`,
+          `${process.env.REACT_APP_SERVER_URI}setreturnwithdraw/Count`,
             { IDEmp: `${iduseSelect}`, NameEquip: `${event.target.value}` }
         );
         setcountwithdrawforReturn({
@@ -384,7 +333,7 @@ const DialogManage: React.FC<Props> = ({ plantNumber = "",updateData }) => {
                   <Input id="component-disabled" value={broke} />
                 </FormControl>
               </form>
-              <Button onClick={handleId} color="primary">
+              <Button onClick={handleReturn} color="primary">
                 Return
               </Button>
               <Button onClick={handleCloseAdd} color="primary">

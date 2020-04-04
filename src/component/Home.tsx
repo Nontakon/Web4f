@@ -148,16 +148,9 @@ const Home: React.FC = () => {
     ],
     data: []
   });
-
-  const classes = useStyles();
-
-  const [openadd, setOpenadd] = React.useState(false);
-
   useEffect(() => {
     chacktoken();
   }, []);
-  const [valuetab, setValuetab] = React.useState("one"); //problem
-
   return (
     <div>
       <Headnav>
