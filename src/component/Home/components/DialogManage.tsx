@@ -135,7 +135,7 @@ const DialogManage: React.FC<Props> = ({ plantNumber = "",updateData }) => {
       setOpenadd(false);
     };
 
-    const [valuetab, setValuetab] = React.useState("one"); //problem
+    const [valuetab, setValuetab] = React.useState("one"); 
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
         setValuetab(newValue);

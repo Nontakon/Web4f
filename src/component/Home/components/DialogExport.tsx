@@ -14,6 +14,13 @@ import Input from "@material-ui/core/Input";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import XLSX from "xlsx";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+
 
 const StyledFormControl = styled(FormControl)`
 margin: 1rem;
@@ -24,19 +31,58 @@ interface WithdrawInfo {
     LastNameEmp: string;
     IDEmp: string;
     NameEquip: string;
-    Process: string;
     DateLog: Date | string;
     CountLog: number;
 }
-
+interface AddInfo {
+    NameEmp: string;
+    LastNameEmp: string;
+    IDEmp: string;
+    NameEquip: string;
+    DateLog: Date | string;
+    CountLog: number;
+}
 interface TableWithdraw {
     columns: Array<Column<WithdrawInfo>>;
     data: WithdrawInfo[];
 }
-
+interface TableAdd {
+    columns: Array<Column<AddInfo>>;
+    data: AddInfo[];
+}
  interface Props{
     plantNumber : string;
 } 
+
+interface TabPanelProps {
+    children?: React.ReactNode;
+    index: any;
+    value: any;
+}
+
+function a11yProps(index: any) {
+    return {
+        id: `wrapped-tab-${index}`,
+        "aria-controls": `wrapped-tabpanel-${index}`
+    };
+} 
+
+function TabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <Typography
+            component="div"
+            role="tabpanel"
+            hidden={value !== index}
+            id={`wrapped-tabpanel-${index}`}
+            aria-labelledby={`wrapped-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box p={2}>{children}</Box>}
+        </Typography>
+    );
+}
 
 export const DialogExport: React.FC<Props> = ({plantNumber=""}) => {
     // console.log(plantNumber);
@@ -47,7 +93,17 @@ export const DialogExport: React.FC<Props> = ({plantNumber=""}) => {
             { title: "Lastname", field: "LastNameEmp" },
             { title: "ID", field: "IDEmp" },
             { title: "Equipment", field: "NameEquip" },
-            { title: "Process", field: "Process" },
+            { title: "Date", field: "DateLog" },
+            { title: "Quantity", field: "CountLog" }
+        ],
+        data: []
+    });
+    const [addLog, setAddLog] = React.useState<TableAdd>({
+        columns: [
+            { title: "Name", field: "NameEmp" },
+            { title: "Lastname", field: "LastNameEmp" },
+            { title: "ID", field: "IDEmp" },
+            { title: "Equipment", field: "NameEquip" },
             { title: "Date", field: "DateLog" },
             { title: "Quantity", field: "CountLog" }
         ],
@@ -71,10 +127,15 @@ export const DialogExport: React.FC<Props> = ({plantNumber=""}) => {
             try {
                 if(plantNumber !== ""){
                     let infowithdraw = await axios.post(
-                        `${process.env.REACT_APP_SERVER_URI}selectlog/`,{Month : `${month}`,Year : `${year}`,KKS1 : `${plantNumber}` }
+                        `${process.env.REACT_APP_SERVER_URI}selectlog/withdraw`,{Month : `${month}`,Year : `${year}`,KKS1 : `${plantNumber}` }
                     );
-                    console.log(infowithdraw.data);
+                    // console.log(infowithdraw.data);
                     setWithdrawLog(prev => ({ ...prev, data: infowithdraw.data }));
+                    let infoAdd = await axios.post(
+                        `${process.env.REACT_APP_SERVER_URI}selectlog/add`, { Month: `${month}`, Year: `${year}`, KKS1: `${plantNumber}` }
+                    );
+                    // console.log(infowithdraw.data);
+                    setAddLog(prev => ({ ...prev, data: infoAdd.data }));
                 }
             }catch (e) {
                 console.log(e);
@@ -88,14 +149,13 @@ export const DialogExport: React.FC<Props> = ({plantNumber=""}) => {
     const handleClose = () => {
         setOpen(false);
     };
-    const exportXlsx = () => {
+    const exportXlsxWithdraw = () => {
         const dataexcel = withdrawLog.data.map(
             ({
                 NameEmp,
                 LastNameEmp,
                 IDEmp,
                 NameEquip,
-                Process,
                 DateLog,
                 CountLog
             }) => ({
@@ -103,7 +163,6 @@ export const DialogExport: React.FC<Props> = ({plantNumber=""}) => {
                 Lastname: LastNameEmp,
                 ID: IDEmp,
                 Equipment: NameEquip,
-                Process : Process,
                 Date: dayjs(DateLog).format("DD/MM/YYYY HH:mm:ss"),
                 Quantity: CountLog
             })
@@ -111,24 +170,245 @@ export const DialogExport: React.FC<Props> = ({plantNumber=""}) => {
         const ws = XLSX.utils.json_to_sheet(dataexcel);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
-        XLSX.writeFile(wb, `WithdrawReport : ${month}-${year} .xlsx`);
+        XLSX.writeFile(wb, `WithdrawEquipmentReport : ${month}-${year} .xlsx`);
         setOpen(false);
     };
+    const exportXlsxAdd = () => {
+        const dataexcel = addLog.data.map(
+            ({
+                NameEmp,
+                LastNameEmp,
+                IDEmp,
+                NameEquip,
+                DateLog,
+                CountLog
+            }) => ({
+                Name: NameEmp,
+                Lastname: LastNameEmp,
+                ID: IDEmp,
+                Equipment: NameEquip,
+                Date: dayjs(DateLog).format("DD/MM/YYYY HH:mm:ss"),
+                Quantity: CountLog
+            })
+        );
+        const ws = XLSX.utils.json_to_sheet(dataexcel);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
+        XLSX.writeFile(wb, `AddEquipmentReport : ${month}-${year} .xlsx`);
+        setOpen(false);
+    };
+    const classes = useStyles();
+    const [valuetab, setValuetab] = React.useState("one"); 
+
+    const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
+        setValuetab(newValue);
+    };
+    
     return (
-        <>
-            <ButDiv>
-            <ExportBut variant="outlined" color="primary" onClick={handleClickOpen}>
-                Export
-            </ExportBut>
-            </ButDiv>
-            <Dialog
-                fullWidth
-                maxWidth={"lg"}
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="form-dialog-title"
-            >
-                <DialogTitle id="form-dialog-title">Inventory Log</DialogTitle>
+      <>
+        <ButDiv>
+          <ExportBut
+            variant="outlined"
+            color="primary"
+            onClick={handleClickOpen}
+          >
+            Export
+          </ExportBut>
+        </ButDiv>
+        <Dialog
+          fullWidth
+          maxWidth={"lg"}
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <div className={classes.root}>
+            <div className={classes.tabBackground}>
+              <AppBar position="static" color="transparent">
+                <Tabs
+                  value={valuetab}
+                  onChange={handleChange}
+                  indicatorColor="primary"
+                  textColor="primary"
+                  aria-label="wrapped label tabs example"
+                >
+                  <Tab
+                    value="one"
+                    label="Withdraw Equipment history"
+                    wrapped
+                    {...a11yProps("one")}
+                  />
+                  <Tab
+                    value="two"
+                    label="Add Equipment history"
+                    wrapped
+                    {...a11yProps("two")}
+                  />
+                  <Tab
+                    value="three"
+                    label="Change Equipment history"
+                    wrapped
+                    {...a11yProps("three")}
+                  />
+                  <Tab
+                    value="four"
+                    label="Return Equipment history"
+                    wrapped
+                    {...a11yProps("four")}
+                  />
+                  <Tab
+                    value="five"
+                    label="Broke Equipment history"
+                    wrapped
+                    {...a11yProps("five")}
+                  />
+                </Tabs>
+              </AppBar>
+            </div>
+            <TabPanel value={valuetab} index="one">
+              <form>
+                <StyledFormControl>
+                  <InputLabel htmlFor="demo-dialog-native">Month</InputLabel>
+                  <Select
+                    native
+                    value={month}
+                    onChange={handleMonth}
+                    input={<Input id="demo-dialog-native" />}
+                  >
+                    {[...new Array(12)].map((_, i) => {
+                      // console.log(i)
+                      return (
+                        <option
+                          key={i}
+                          value={dayjs()
+                            .add(0 - i, "month")
+                            .format("M")}
+                        >
+                          {dayjs()
+                            .add(0 - i, "month")
+                            .format("MMMM")}
+                        </option>
+                      );
+                    })}
+                  </Select>
+                </StyledFormControl>
+                <StyledFormControl>
+                  <InputLabel htmlFor="demo-dialog-native">Year</InputLabel>
+                  <Select
+                    native
+                    value={year}
+                    onChange={handleYear}
+                    input={<Input id="demo-dialog-native" />}
+                  >
+                    {[...new Array(4)].map((_, i) => {
+                      // console.log(i)
+                      return (
+                        <option
+                          key={i}
+                          value={dayjs()
+                            .add(0 - i, "year")
+                            .format("YYYY")}
+                        >
+                          {dayjs()
+                            .add(0 - i, "year")
+                            .format("YYYY")}
+                        </option>
+                      );
+                    })}
+                  </Select>
+                </StyledFormControl>
+              </form>
+              <MaterialTable
+                title=""
+                style={{ borderRadius: "15" }}
+                columns={withdrawLog.columns}
+                data={withdrawLog.data.map(({ DateLog, ...rest }) => ({
+                  ...rest,
+                  DateLog: dayjs(DateLog).format("DD/MM/YYYY"),
+                }))}
+              />
+              <ExportDiv>
+                <Button onClick={handleClose} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={exportXlsxWithdraw} color="primary">
+                  Export
+                </Button>
+              </ExportDiv>
+            </TabPanel>
+            <TabPanel value={valuetab} index="two">
+              <form>
+                <StyledFormControl>
+                  <InputLabel htmlFor="demo-dialog-native">Month</InputLabel>
+                  <Select
+                    native
+                    value={month}
+                    onChange={handleMonth}
+                    input={<Input id="demo-dialog-native" />}
+                  >
+                    {[...new Array(12)].map((_, i) => {
+                      // console.log(i)
+                      return (
+                        <option
+                          key={i}
+                          value={dayjs()
+                            .add(0 - i, "month")
+                            .format("M")}
+                        >
+                          {dayjs()
+                            .add(0 - i, "month")
+                            .format("MMMM")}
+                        </option>
+                      );
+                    })}
+                  </Select>
+                </StyledFormControl>
+                <StyledFormControl>
+                  <InputLabel htmlFor="demo-dialog-native">Year</InputLabel>
+                  <Select
+                    native
+                    value={year}
+                    onChange={handleYear}
+                    input={<Input id="demo-dialog-native" />}
+                  >
+                    {[...new Array(4)].map((_, i) => {
+                      // console.log(i)
+                      return (
+                        <option
+                          key={i}
+                          value={dayjs()
+                            .add(0 - i, "year")
+                            .format("YYYY")}
+                        >
+                          {dayjs()
+                            .add(0 - i, "year")
+                            .format("YYYY")}
+                        </option>
+                      );
+                    })}
+                  </Select>
+                </StyledFormControl>
+              </form>
+              <MaterialTable
+                title=""
+                style={{ borderRadius: "15" }}
+                columns={addLog.columns}
+                data={addLog.data.map(({ DateLog, ...rest }) => ({
+                  ...rest,
+                  DateLog: dayjs(DateLog).format("DD/MM/YYYY"),
+                }))}
+              />
+              <ExportDiv>
+                <Button onClick={handleClose} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={exportXlsxAdd} color="primary">
+                  Export
+                </Button>
+              </ExportDiv>
+            </TabPanel>
+          </div>
+          {/* <DialogTitle id="form-dialog-title">Inventory Log</DialogTitle>
                 <DialogContent>
                     <DialogContentText>Insert month and year</DialogContentText>
                     <form>
@@ -198,13 +478,35 @@ export const DialogExport: React.FC<Props> = ({plantNumber=""}) => {
                     <Button onClick={exportXlsx} color="primary">
                         Export
                     </Button>
-                </DialogActions>
-            </Dialog>
-        </>
+                </DialogActions> */}
+        </Dialog>
+      </>
     );
 };
 
 export default DialogExport;
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        container: {
+            display: "flex",
+            flexWrap: "wrap",
+            width: "fit-content",
+            margin: "auto"
+        },
+        formControl: {
+            margin: theme.spacing(1),
+            minWidth: 120
+        },
+        root: {
+            flexGrow: 1,
+            backgroundColor: theme.palette.background.paper,
+        },
+        tabBackground: {
+            backgroundColor: 'orange',
+        }
+    })
+);
 
 const ExportBut = styled(Button)`
   &&&{
@@ -217,4 +519,10 @@ const ExportBut = styled(Button)`
 const ButDiv = styled.div`
     display: flex;
     justify-content: flex-end;
+`;
+
+const ExportDiv = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
 `;
