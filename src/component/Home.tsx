@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useCallback } from "react";
 import { CounterContext } from "../store/storeprovider";
 import { useHistory } from "react-router";
 import axios from "axios";
@@ -115,23 +115,26 @@ const Home: React.FC = () => {
       }
     });
   }
-  const chacktoken = async () => {
-    if (token !== undefined) {
-      let infouser = await axios.post(
-        `${process.env.REACT_APP_SERVER_URI}equip_table/user`,
-        { token: `${token}` }
-      );
-      setuserinfo(infouser.data[0]);
-      let infodata = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}equip_table/${infouser.data[0].KKS1_factory}`
-      );
-      // console.log(infodata.data)
-      setState(prev => ({ ...prev, data: infodata.data }));
-      checkitem()
-    } else {
-      push("/LoginFrom");
-    }
-  };
+  const fetchAndCheckToken = useCallback(
+    async () => {
+      if (token !== undefined) {
+        let infouser = await axios.post(
+          `${process.env.REACT_APP_SERVER_URI}equip_table/user`,
+          { token: `${token}` }
+        );
+        setuserinfo(infouser.data[0]);
+        let infodata = await axios.get(
+          `${process.env.REACT_APP_SERVER_URI}equip_table/${infouser.data[0].KKS1_factory}`
+        );
+        // console.log(infodata.data)
+        setState(prev => ({ ...prev, data: infodata.data }));
+        checkitem()
+      } else {
+        push("/LoginFrom");
+      }
+    },
+    []
+  );
   const logout = async () => {
     Cookies.remove("access_token");
     push("/LoginFrom");
@@ -149,8 +152,8 @@ const Home: React.FC = () => {
     data: []
   });
   useEffect(() => {
-    chacktoken();
-  }, []);
+    fetchAndCheckToken();
+  }, [fetchAndCheckToken]);
   return (
     <div>
       <Headnav>
