@@ -56,7 +56,6 @@ export default function LoginFrom() {
       console.log(info.data);
       if (info.data === true){
         setChecked(true);
-        console.log("hi")
       } 
       // addKKS1(info.data.KKS1);
       // adduserName(info.data.user);
@@ -80,7 +79,7 @@ export default function LoginFrom() {
           <StyledTextField
             id="standard-basic"
             label="ID"
-            inputRef={register({ required: true, pattern: /([0-9]){13}/i })}
+            inputRef={register({ required: true })}
             type="text"
             name="id"
             InputProps={{
