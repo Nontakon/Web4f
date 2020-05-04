@@ -207,7 +207,7 @@ const DialogManage: React.FC<Props> = ({ plantNumber = "",updateData }) => {
                 color="primary"
                 onClick={handleClickOpenAdd}
             >
-                Manage Item
+                Manage Inventory
           </AddBut>
         <Dialog
           fullWidth={true}
@@ -227,7 +227,7 @@ const DialogManage: React.FC<Props> = ({ plantNumber = "",updateData }) => {
                 aria-label="wrapped label tabs example"
               >
                 <Tab value="one" label="Insert Inventory" wrapped {...a11yProps("one")} />
-                <Tab value="two" label="Return Inventory" wrapped {...a11yProps("two")} />
+                <Tab value="two" label="Return Equipment's Withdraw" wrapped {...a11yProps("two")} />
               </Tabs>
             </AppBar>
             </div>
