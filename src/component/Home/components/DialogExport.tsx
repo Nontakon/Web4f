@@ -370,7 +370,7 @@ export const DialogExport: React.FC<Props> = ({plantNumber=""}) => {
             color="primary"
             onClick={handleClickOpen}
           >
-            Export
+            Export history
           </ExportBut>
         </ButDiv>
         <Dialog
